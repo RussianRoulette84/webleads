@@ -1,0 +1,23 @@
+[package]
+name = "webleads-ui"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+# A binary, not a library: trunk builds this into WebAssembly and the browser runs it.
+[[bin]]
+name = "webleads-ui"
+path = "src/main.rs"
+
+[dependencies]
+webleads-domain = { workspace = true }
+leptos = { workspace = true }
+console_error_panic_hook = "0.1"
+gloo-net = { version = "0.6", features = ["http"] }
+wasm-bindgen = "0.2"
+# The clock, for saying how long a request took in the console.
+js-sys = "0.3"
+web-sys = { version = "0.3", features = ["Window", "ErrorEvent", "PromiseRejectionEvent", "EventTarget", "EventSource", "MessageEvent", "Navigator", "Clipboard", "Document", "Element", "ScrollToOptions", "ScrollBehavior"] }
+serde = { workspace = true }
+serde_json = { workspace = true }

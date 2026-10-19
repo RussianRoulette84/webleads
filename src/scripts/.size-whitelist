@@ -1,0 +1,2 @@
+# Files the length check leaves alone: other people's code, kept exactly as released.
+src/web/vendor/*

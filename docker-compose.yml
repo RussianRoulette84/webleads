@@ -1,0 +1,27 @@
+# One command starts everything:  docker compose up --build
+# Then open http://127.0.0.1:8100
+
+services:
+  # The Google Maps engine: gosom/google-maps-scraper, pinned to the release every
+  # setting in docs/SCRAPER_SETTINGS.md was measured against.
+  scraper:
+    image: gosom/google-maps-scraper:v1.18.0
+    command: ["-web", "-addr", ":8080", "-data-folder", "/gmapsdata"]
+    volumes:
+      - ./data/scraper:/gmapsdata
+    restart: unless-stopped
+
+  # The call list: the server and the page.
+  webleads:
+    build: .
+    depends_on:
+      - scraper
+    environment:
+      WEBLEADS_SCRAPER_URL: http://scraper:8080
+    ports:
+      - "${WEBLEADS_PORT:-8100}:8100"
+    volumes:
+      # Real businesses and real phone numbers live here — on your disk, never in the image.
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: unless-stopped

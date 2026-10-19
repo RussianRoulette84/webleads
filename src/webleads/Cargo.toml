@@ -1,0 +1,115 @@
+# The workspace. Every crate lives under crates/ and shares one lockfile and one
+# target directory, so a dependency is compiled once for the whole project.
+[workspace]
+resolver = "2"
+members = [
+    # The rules and the types: what a lead, a trade and a run actually are.
+    "crates/domain",
+    # Reads the Google Maps scraper's output and its job API.
+    "crates/scraper",
+    # Decides whether a website is real, social-only, broken or absent.
+    "crates/sitecheck",
+    # SQLite: remembers every business, every note and when we first saw it.
+    "crates/store",
+    # The program that serves the web addresses and the page itself.
+    "crates/server",
+    # The page you look at, written in Rust and compiled to WebAssembly.
+    "crates/ui",
+]
+
+# Versions are pinned here once. Each crate then writes `foo.workspace = true`
+# instead of repeating a version number that would slowly drift out of step.
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.88"
+license = "MIT"
+
+# Outside libraries, grouped by the job they do. Rust ships with almost nothing
+# built in, so even reading a date or opening a socket comes from a library here.
+[workspace.dependencies]
+
+# ── Data in and out of text ────────────────────────────────────────────────────
+# Turns our Rust types into JSON and back; `derive` writes that conversion for us.
+serde = { version = "1", features = ["derive"] }
+# The JSON format itself — serde is the machinery, this is the dialect.
+serde_json = "1"
+
+# ── Errors ─────────────────────────────────────────────────────────────────────
+# Builds our own named error types, each with a sentence explaining itself.
+thiserror = "1"
+# One catch-all error type for the edges of the program, where only a human reads it.
+anyhow = "1"
+
+# ── Logging ────────────────────────────────────────────────────────────────────
+# Where we write log lines from: `info!`, `warn!`, `error!`.
+tracing = "0.1"
+# Decides what actually gets printed, and reads the level out of an environment variable.
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+# Writes those lines into a file under logs/ instead of only the terminal.
+tracing-appender = "0.2"
+
+# ── Doing many things at once ──────────────────────────────────────────────────
+# The engine that runs `async` code — Rust has no built-in one, so every server needs this.
+tokio = { version = "1", features = ["full"] }
+# Small helpers for working with streams of values that arrive over time.
+futures-util = "0.3"
+
+# ── The web server ─────────────────────────────────────────────────────────────
+# Matches an incoming web address to the function that answers it.
+axum = "0.7"
+# Extras that sit on top of axum: serving files from a folder, request logging, compression.
+tower-http = { version = "0.5", features = ["fs", "trace", "compression-gzip"] }
+
+# ── Talking to other servers ───────────────────────────────────────────────────
+# Fetches a page so sitecheck can judge it; `stream` lets us read the top of a page
+# and stop, rather than downloading a forty megabyte homepage to look at the first
+# sixty kilobytes.
+reqwest = { version = "0.12", features = ["json", "stream"] }
+
+# ── The database ───────────────────────────────────────────────────────────────
+# Talks to SQLite, and checks our queries at compile time so a typo is a build error.
+sqlx = { version = "0.7", features = ["runtime-tokio", "sqlite", "time"] }
+
+# ── File formats ───────────────────────────────────────────────────────────────
+# Reads the scraper's comma-separated spreadsheets and our list of trades.
+csv = "1"
+# Writes a real Excel file: an .xlsx is a zip full of XML, and hand-rolling that is a
+# few hundred lines a well-known crate already has.
+rust_xlsxwriter = "0.99"
+
+# ── Dates and clocks ───────────────────────────────────────────────────────────
+# Dates and times, and the opening hours we compare against them.
+time = { version = "0.3", features = ["serde", "formatting", "parsing"] }
+# Budapest's timezone, carried with us rather than read from the container, so a
+# changed image cannot silently move every date we have stored.
+time-tz = { version = "2", features = ["db"] }
+# Which clock a spot on the map keeps, from its coordinates — so a city in any
+# country gets the right zone without anyone typing one.
+tzf-rs = { version = "2", default-features = false, features = ["bundled"] }
+
+# ── The browser page ───────────────────────────────────────────────────────────
+# Builds the page out of Rust functions; `csr` means the browser draws it, not the server.
+leptos = { version = "0.6", features = ["csr"] }
+
+# ── Our own crates ─────────────────────────────────────────────────────────────
+# Named here so one of ours can depend on another by name instead of by folder path.
+# The four below are libraries; server and ui are programs and nothing depends on them.
+# What a lead is — depends on nothing of ours, and everything else depends on it.
+webleads-domain = { path = "crates/domain" }
+# Starts searches on the Google Maps scraper and reads the spreadsheets it writes.
+webleads-scraper = { path = "crates/scraper" }
+# Fetches a business's link and rules on it: working, social-only, broken or missing.
+webleads-sitecheck = { path = "crates/sitecheck" }
+# The SQLite side — saves every business, every call note, and what we searched when.
+webleads-store = { path = "crates/store" }
+
+# Debug builds are what we run all day; make them tolerable without giving up
+# the symbols that make a panic readable.
+[profile.dev]
+opt-level = 1
+
+# Outside libraries get full optimisation anyway — we never step through them, and
+# they are only compiled once.
+[profile.dev.package."*"]
+opt-level = 3

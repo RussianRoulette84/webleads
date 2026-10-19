@@ -1,0 +1,95 @@
+@layer base {
+
+/* Padding counts inside a width, not on top of it.
+   Without this every `.panel { width:100%; padding:15px }` is thirty pixels wider
+   than the thing holding it — which is why the map hung over the right edge. */
+*, *::before, *::after { box-sizing: border-box }
+/* ===================================================================
+   HARDENING — the parts a theme normally forgets
+   =================================================================== */
+/* --- the display face: Cinzel, for the masthead and nothing else ---
+   Engraved Roman capitals, open licence, loaded with the other three faces in the
+   page head. Handsome large, unreadable small, so it stays on the masthead. */
+
+/* --- 13. fonts: fall back to something the same size, and never block --- */
+@font-face{font-family:"Cormorant fallback";src:local("Georgia"),local("Times New Roman");
+  size-adjust:88%;ascent-override:96%;descent-override:26%;line-gap-override:0%}
+@font-face{font-family:"Spectral fallback";src:local("Georgia"),local("Times New Roman");
+  size-adjust:99%;ascent-override:102%;descent-override:26%;line-gap-override:0%}
+@font-face{font-family:"Mono fallback";src:local("Menlo"),local("Consolas"),local("monospace");
+  size-adjust:96%}
+
+/* --- 3. focus you can actually see, only for keyboard users --- */
+:where(a,button,input,select,textarea,[tabindex]):focus{outline:none}
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{
+  outline:2px solid var(--wl-brass-lit);outline-offset:3px;border-radius:1px}
+.sheet__copy:focus-visible,#prism-toggle:focus-visible{outline-offset:4px}
+/* --- 4. selection in the theme's own colours --- */
+::selection{background:var(--wl-brass);color:var(--wl-ink);text-shadow:none}
+::-moz-selection{background:var(--wl-brass);color:var(--wl-ink);text-shadow:none}
+/* --- 2. scrollbars, both syntaxes --- */
+*{scrollbar-width:thin;scrollbar-color:var(--wl-brass-lit) transparent}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-track{background:#0a0907}
+::-webkit-scrollbar-thumb{background:#3a3128;border:2px solid #0a0907}
+::-webkit-scrollbar-thumb:hover{background:var(--wl-brass)}
+::-webkit-scrollbar-corner{background:#0a0907}
+/* --- 6, 7. placeholders and the typing caret --- */
+input,textarea,select,.listbox__button{caret-color:var(--wl-brass-lit)}
+::placeholder{color:var(--wl-ash);opacity:1;font-style:italic;letter-spacing:.02em}
+/* --- 5. autofill: Chrome repaints the field, so repaint it back --- */
+input:-webkit-autofill,input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,textarea:-webkit-autofill,select:-webkit-autofill{
+  -webkit-text-fill-color:var(--wl-bone);
+  -webkit-box-shadow:0 0 0 1000px var(--wl-soot) inset;
+  caret-color:var(--wl-brass-lit);
+  transition:background-color 100000s ease-in-out 0s}
+/* --- 19. nothing may push the page sideways --- */
+.sheet pre{overflow-wrap:anywhere;word-break:break-word;tab-size:2}
+.register__entry,.register__entry > *,.specimen,.entry__demo > *{min-width:0}
+.entry__demo{max-width:100%}
+/* --- 20. a thumb needs somewhere to land --- */
+@media (pointer:coarse){
+  .btn--quiet,.pagination span,.tabs span,.nav div,.listbox__option,
+  .searchbox .clear,.stepper .arrows button{min-height:44px;display:flex;
+    align-items:center;justify-content:center}
+  .sheet__copy,#prism-toggle{min-height:44px}
+}
+/* --- 12. motion off means all of it, not just the prism --- */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+/* --- 11. Windows high contrast throws away colour; give the shapes back --- */
+@media (forced-colors:active){
+  .btn,.btn--secondary,.btn--quiet,.btn--danger,.btn--plate,.listbox__button,
+  .field--search,.panel,.dialog,.alert,.toast,.empty,.progress b,.plate,
+  .register__entry,.swatch,.specimen,.sheet{border:1px solid ButtonBorder!important}
+  .progress b::before,.progress b::after,.plate::before,.plate-in::after{display:none!important}
+  .masthead__rays,.rays-fan,#prism-canvas,.hero{display:none!important}
+  .corner,.lozenge{forced-color-adjust:none}
+  a{color:LinkText!important}
+  .tag,.entry__head code{forced-color-adjust:none;color:CanvasText!important}
+}
+/* --- 10. it is a document; let it be printed like one --- */
+@media print{
+  @page{margin:16mm}
+  #prism-canvas,#prism-toggle,.hero,.masthead__rays,.sheet__copy,.rays-fan{display:none!important}
+  html,body{background:#fff!important;color:#111!important}
+  .register{max-width:none;padding:0}
+  .masthead,.masthead__inner{background:#fff!important;color:#111!important}
+  .masthead h1,.masthead .sub,.section-head h2,.entry__head .nm,.sheet h3{color:#111!important}
+  .masthead .sub,.section-head .n,.entry__head code,.register__entry .num{color:#7a5c1c!important}
+  .register__entry,.swatch,.specimen,.sheet,.plate{break-inside:avoid;page-break-inside:avoid;
+    border:1px solid #bbb!important;background:#fff!important}
+  .sheet pre{background:#f6f4ef!important;color:#222!important;max-height:none;
+    border:1px solid #ddd!important}
+  .section-note,.entry__note,.masthead .ded{color:#555!important}
+  a[href^="http"]::after{content:" (" attr(href) ")";font-size:14px;color:#666}
+  .fleuron,.entry__leaders{border-color:#bbb!important;color:#999!important}
+  .masthead__mark{filter:none!important;width:74px}
+  .masthead__mark path{fill:#2a2622!important;stroke:#7a5c1c!important}
+  .tabs span{padding:6px 16px 6px 0}
+  .palette,.plate-row,.typeset{break-inside:avoid}
+}
+}

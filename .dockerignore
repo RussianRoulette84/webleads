@@ -1,0 +1,10 @@
+# Only src/ goes into the build; everything else stays on your disk.
+**/target
+**/dist
+data
+logs
+bin
+design
+.git
+.claude
+.Trash-*

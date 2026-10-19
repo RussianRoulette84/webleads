@@ -1,0 +1,7 @@
+# Everyone and every machine builds with the same compiler. Without this file a
+# different Rust version elsewhere can accept code that ours rejects, or the
+# reverse, and the disagreement is painful to track down.
+[toolchain]
+channel = "stable"
+components = ["rustfmt", "clippy"]
+targets = ["wasm32-unknown-unknown"]

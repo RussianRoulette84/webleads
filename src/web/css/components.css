@@ -1,0 +1,326 @@
+@layer components {
+/* ============================================================
+   Sherlock Noir — design tokens
+   ============================================================ */
+
+
+/* ---- shared helpers ---- */
+.field__label { font-size:15px;letter-spacing:var(--wl-tracking,.14em);color:var(--wl-ash);
+     text-transform:var(--wl-case,uppercase);display:block;margin-bottom:6px }
+.u-wide { width:100% }
+.select__wrap { position:relative;width:100% }
+.select__wrap.select__wrap--caret::after { content:"\25BE";position:absolute;right:10px;top:9px;color:var(--wl-brass);pointer-events:none;font-size:15px }
+
+/* ---- button-primary (version B) ---- */
+.btn { font-family:var(--wl-font-body);font-size:15px;letter-spacing:var(--wl-tracking,.1em);
+    text-transform:var(--wl-case,uppercase);cursor:pointer;border-radius:var(--wl-radius,0) }
+.btn { background:transparent;color:var(--wl-brass);border:1px solid var(--wl-brass);padding:10px 20px }
+
+/* ---- button-secondary (version B) ---- */
+.btn--secondary { font-family:var(--wl-font-body);font-size:15px;letter-spacing:var(--wl-tracking,.1em);
+    text-transform:var(--wl-case,uppercase);cursor:pointer;border-radius:var(--wl-radius,0) }
+.btn--secondary { background:transparent;color:var(--wl-ash);border:1px dashed var(--wl-line);padding:10px 18px }
+
+/* ---- button-quiet (version B) ---- */
+.btn--quiet { font-family:var(--wl-font-body);font-size:15px;letter-spacing:var(--wl-tracking,.1em);
+    text-transform:var(--wl-case,uppercase);cursor:pointer;border-radius:var(--wl-radius,0) }
+.btn--quiet { background:var(--wl-soot);border:none;color:var(--wl-bone);padding:6px 11px }
+
+/* ---- button-danger (version B) ---- */
+.btn--danger { font-family:var(--wl-font-body);font-size:15px;letter-spacing:var(--wl-tracking,.1em);
+    text-transform:var(--wl-case,uppercase);cursor:pointer;border-radius:var(--wl-radius,0) }
+.btn--danger { background:transparent;color:var(--wl-rust);border:1px solid var(--wl-rust);padding:10px 20px }
+
+/* ---- radius (version A) ---- */
+.radius { border-radius:0 }
+
+/* ---- input-text (version A) ---- */
+.field { font-family:var(--wl-font-body);font-size:16px;color:var(--wl-bone);background:transparent;
+    width:100%;outline:none;border-radius:var(--wl-radius,0) }
+.field { border:none;border-bottom:1px solid var(--wl-line);padding:9px 2px;border-radius:0 }
+
+/* ---- input-number (version A) ---- */
+.field--number { font-family:var(--wl-font-body);font-size:16px;color:var(--wl-bone);background:transparent;
+    width:100%;outline:none;border-radius:var(--wl-radius,0) }
+.field--number { border:none;border-bottom:1px solid var(--wl-line);padding:9px 2px;border-radius:0 }
+
+/* ---- input-search (version B) ---- */
+.field--search { font-family:var(--wl-font-body);font-size:16px;color:var(--wl-bone);background:transparent;
+    width:100%;outline:none;border-radius:var(--wl-radius,0) }
+.field--search { border:var(--wl-border,1px solid var(--wl-ash));background:var(--wl-soot);padding:10px 12px }
+
+/* ---- textarea (version A) ---- */
+.field--notes { font-family:var(--wl-font-body);font-size:16px;color:var(--wl-bone);background:transparent;
+    width:100%;outline:none;border-radius:var(--wl-radius,0) }
+.field--notes { border:none;border-bottom:1px solid var(--wl-line);padding:9px 2px;border-radius:0 }
+
+/* ---- dropdown (version A) ---- */
+.select { font-family:var(--wl-font-body);font-size:16px;color:var(--wl-bone);width:100%;cursor:pointer;
+    appearance:none;outline:none;border-radius:var(--wl-radius,0) }
+.select { background:var(--wl-soot);border:var(--wl-border,1px solid var(--wl-ash));padding:10px 12px }
+
+/* ---- multiselect (version C) ---- */
+.multiselect { display:flex;gap:7px;flex-wrap:wrap }
+.multiselect__item { font-size:16px;letter-spacing:var(--wl-tracking,.1em);text-transform:var(--wl-case,uppercase);
+      border:1px solid var(--wl-line);color:var(--wl-ash);padding:6px 13px;border-radius:var(--wl-radius,0) }
+.multiselect__item.on { border-color:var(--wl-brass);color:var(--wl-brass) }
+
+/* ---- checkbox (version C) ---- */
+.checkbox { display:flex;gap:10px;align-items:center;font-size:15px;cursor:pointer }
+.checkbox i { font-style:normal;display:inline-flex;align-items:center;justify-content:center }
+.checkbox i { color:var(--wl-brass);font-size:16px }
+
+/* ---- radio (version B) ---- */
+.radio { display:flex;gap:10px;align-items:center;font-size:15px;cursor:pointer }
+.radio i { font-style:normal;display:inline-flex;align-items:center;justify-content:center }
+.radio i { width:15px;height:15px;border:1px solid var(--wl-line) }
+.radio i b { width:7px;height:7px;background:var(--wl-brass);display:block }
+
+/* ---- switch (version B) ---- */
+.switch { display:inline-flex;align-items:center;gap:11px;font-size:15px;cursor:pointer }
+.switch span { width:40px;height:20px;background:var(--wl-soot);border:1px solid var(--wl-brass);display:inline-flex;align-items:center;padding:2px;justify-content:flex-end }
+.switch span b { width:14px;height:14px;background:var(--wl-brass);display:block }
+
+/* ---- slider (version A) ---- */
+.slider { height:1px;background:var(--wl-line);position:relative;width:100% }
+.slider b { position:absolute;left:58%;top:-6px;width:3px;height:13px;background:var(--wl-brass) }
+
+/* ---- tag (version C) ---- */
+.tag { font-size:15px;letter-spacing:var(--wl-tracking,.13em);text-transform:var(--wl-case,uppercase);
+    border-radius:var(--wl-radius,0);display:inline-block }
+.tag { color:var(--wl-verdigris);padding-left:13px;position:relative }
+.tag::before { content:"";position:absolute;left:0;top:5px;width:7px;height:2px;background:var(--wl-verdigris) }
+
+/* ---- table (version A) ---- */
+.table { width:100%;border-collapse:collapse;font-size:15px }
+.table th { text-align:left;font-size:15px;letter-spacing:var(--wl-tracking,.13em);text-transform:var(--wl-case,uppercase);
+       color:var(--wl-ash);padding:7px 10px;font-weight:400 }
+.table td { padding:9px 10px;color:var(--wl-bone) }
+.table th { border-bottom:1px solid var(--wl-brass) }
+.table td { border-bottom:1px solid var(--wl-soot) }
+
+/* ---- panel (version B) ---- */
+.panel { width:100%;padding:15px;border-radius:var(--wl-radius,0) }
+.panel h4 { font-family:var(--wl-font-head,var(--wl-font-body));font-size:21px;margin-bottom:5px }
+.panel p { font-size:15px;color:var(--wl-ash) }
+.panel { background:var(--wl-soot);box-shadow:var(--wl-shadow,0 6px 20px rgba(0,0,0,.35)) }
+
+/* ---- tabs (version A) ---- */
+.tabs { display:flex;gap:2px;font-size:16px;letter-spacing:var(--wl-tracking,.1em);
+     text-transform:var(--wl-case,uppercase);width:100% }
+.tabs span { padding:9px 14px;color:var(--wl-ash) }
+.tabs { border-bottom:1px solid var(--wl-soot) }
+.tabs span.on { color:var(--wl-brass);box-shadow:inset 0 -2px 0 var(--wl-brass) }
+
+/* ---- nav (version B) ---- */
+.nav { width:100%;font-size:15px }
+.nav div { padding:9px 13px;color:var(--wl-ash) }
+.nav div.on { background:var(--wl-brass);color:var(--wl-ink) }
+
+/* ---- progress (version C) ---- */
+.progress { width:100%;font-size:15px;color:var(--wl-ash);letter-spacing:var(--wl-tracking,.11em) }
+.progress b { display:block;height:20px;background:var(--wl-soot);position:relative;margin-top:7px;
+        border:var(--wl-border,1px solid transparent);border-radius:var(--wl-radius,0) }
+.progress b i { display:block;height:100%;width:44%;background:var(--wl-brass);opacity:.55 }
+.progress b em { position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-style:normal;color:var(--wl-bone);font-size:15px }
+
+/* ---- spinner (version C) ---- */
+.spinner { width:100%;height:3px;background:var(--wl-soot);position:relative;overflow:hidden }
+.spinner u { position:absolute;top:0;bottom:0;width:34%;background:var(--wl-brass);animation:sweep 1.3s infinite }
+
+/* ---- alert (version A) ---- */
+.alert { width:100%;padding:11px 14px;font-size:15px;border-radius:var(--wl-radius,0) }
+.alert { border-left:3px solid var(--wl-rust);background:var(--wl-soot);color:var(--wl-bone);border-radius:0 }
+
+/* ---- modal (version C) ---- */
+.dialog { width:100%;background:var(--wl-soot);font-size:15px;border-radius:var(--wl-radius,0) }
+.dialog h5 { font-family:var(--wl-font-head,var(--wl-font-body));font-size:20px }
+.dialog p { color:var(--wl-ash);margin-top:4px }
+.dialog { border:none;box-shadow:var(--wl-shadow,0 18px 40px rgba(0,0,0,.6));padding:16px }
+
+/* ---- tooltip (version C) ---- */
+.tooltip { font-size:15px }
+.tooltip em { font-style:normal;color:var(--wl-brass);font-size:16px }
+
+/* ---- heading (version C) ---- */
+.heading { font-family:var(--wl-font-head,var(--wl-font-body));font-size:28px;width:100%;
+    text-transform:var(--wl-case,none);letter-spacing:var(--wl-tracking,normal) }
+.heading { display:flex;align-items:center;gap:12px }
+.heading::before { content:"\25C6";color:var(--wl-brass);font-size:16px }
+.heading::after { content:"";flex:1;height:1px;background:var(--wl-ash);opacity:.5 }
+
+/* ---- divider (version B) ---- */
+.divider { width:100% }
+.divider { display:flex;align-items:center;gap:11px;color:var(--wl-brass);font-size:14px }
+.divider::before, .divider::after { content:"";flex:1;height:1px;background:var(--wl-line);opacity:.5 }
+
+/* ---- link (version B) ---- */
+.link { color:var(--wl-bone);text-decoration:none;border-bottom:1px dotted var(--wl-ash) }
+
+/* ---- empty (version C) ---- */
+.empty { width:100%;text-align:center;color:var(--wl-ash);font-size:15px;padding:14px;border-radius:var(--wl-radius,0) }
+.empty em { display:block;font-family:var(--wl-font-head,var(--wl-font-body));font-size:21px;color:var(--wl-bone);margin-bottom:5px;font-style:italic }
+.empty { border:1px dashed var(--wl-line) }
+
+/* ---- pin (version A) ---- */
+.pin { position:relative;width:100%;height:56px;background:var(--wl-soot);border:var(--wl-border,1px solid var(--wl-ash));border-radius:var(--wl-radius,0) }
+.pin i { position:absolute;left:46%;top:16px;font-style:normal }
+.pin i { width:13px;height:13px;background:var(--wl-brass);border-radius:50% 50% 50% 0;transform:rotate(-45deg) }
+
+/* ---- stat (version C) ---- */
+.stat { width:100% }
+.stat b { font-family:var(--wl-font-head,var(--wl-font-body));font-size:35px;color:var(--wl-brass);display:block;line-height:1 }
+.stat span { font-size:15px;letter-spacing:var(--wl-tracking,.15em);text-transform:var(--wl-case,uppercase);color:var(--wl-ash) }
+.stat b { border-bottom:1px solid var(--wl-line);padding-bottom:7px;margin-bottom:7px }
+
+/* ---- pagination (version A) ---- */
+.pagination { display:flex;gap:5px;font-size:15px;align-items:center }
+.pagination span { padding:6px 11px;color:var(--wl-ash);border-radius:var(--wl-radius,0) }
+.pagination span { border:1px solid var(--wl-soot) }
+.pagination span.on { border-color:var(--wl-brass);color:var(--wl-brass) }
+
+/* ---- toast (version A) ---- */
+.toast { width:100%;font-size:15px;border-radius:var(--wl-radius,0) }
+.toast { background:var(--wl-soot);border-left:3px solid var(--wl-verdigris);padding:11px 14px;border-radius:0 }
+
+/* ===================== the house plate =====================
+   The masthead device, cut down: brass edge, notched Deco corners, a hair of a
+   rule set inside it. Used on boxes that deserve weight — not on everything. */
+.plate{position:relative;background:var(--wl-brass);padding:1px;
+       clip-path:polygon(13px 0,calc(100% - 13px) 0,100% 13px,100% calc(100% - 13px),
+                 calc(100% - 13px) 100%,13px 100%,0 calc(100% - 13px),0 13px)}
+.plate-in{position:relative;background:var(--wl-soot);padding:17px 19px;
+       clip-path:polygon(13px 0,calc(100% - 13px) 0,100% 13px,100% calc(100% - 13px),
+                 calc(100% - 13px) 100%,13px 100%,0 calc(100% - 13px),0 13px)}
+.plate-in::after{content:"";position:absolute;inset:6px;pointer-events:none;
+       border:1px solid var(--wl-brass);opacity:.34;
+       clip-path:polygon(9px 0,calc(100% - 9px) 0,100% 9px,100% calc(100% - 9px),
+                 calc(100% - 9px) 100%,9px 100%,0 calc(100% - 9px),0 9px)}
+.plate-in > *{position:relative;z-index:1}
+.btn--plate{background:var(--wl-brass);color:var(--wl-ink);border:none;font-weight:700;
+       font-family:var(--wl-font-body);font-size:16px;letter-spacing:var(--wl-tracking,.1em);
+       text-transform:var(--wl-case,uppercase);padding:13px 26px;cursor:pointer;
+       clip-path:polygon(9px 0,calc(100% - 9px) 0,100% 9px,100% calc(100% - 9px),
+                 calc(100% - 9px) 100%,9px 100%,0 calc(100% - 9px),0 9px)}
+.btn--plate:hover{background:var(--wl-brass-lit)}
+
+/* ===================== the progress bar =====================
+   The one piece of the cut-and-rays experiment that stayed: a cut track with a
+   faint fan of rays behind it. */
+.progress b{position:relative;isolation:isolate;border:none;background:transparent}
+.progress b::before{content:"";position:absolute;inset:0;z-index:-3;pointer-events:none;
+  background:#2a251e;
+  clip-path:polygon(6px 0,calc(100% - 6px) 0,100% 6px,100% calc(100% - 6px),
+            calc(100% - 6px) 100%,6px 100%,0 calc(100% - 6px),0 6px)}
+.progress b::after{content:"";position:absolute;inset:1px;z-index:-2;pointer-events:none;
+  background-color:var(--wl-soot);
+  background-image:repeating-conic-gradient(from 0deg at 50% 340%,
+    color-mix(in srgb,var(--wl-brass) 22%,transparent) 0deg .18deg,
+    transparent .18deg 3.2deg);
+  background-size:100% 100%;background-repeat:no-repeat;
+  clip-path:polygon(6px 0,calc(100% - 6px) 0,100% 6px,100% calc(100% - 6px),
+            calc(100% - 6px) 100%,6px 100%,0 calc(100% - 6px),0 6px)}
+
+/* ===================== the terminal =====================
+   Our window chrome, not the operating system's: square corners, a brass rule
+   under the title, and bracketed controls instead of coloured pills. */
+.terminal{font-family:var(--wl-font-data);background:#070605;border:1px solid #2a251e;
+  box-shadow:0 18px 44px rgba(0,0,0,.6);width:100%;overflow:hidden}
+.terminal__bar{display:flex;align-items:center;gap:11px;padding:9px 12px;
+  background:linear-gradient(180deg,#17130d 0%,#100e0a 100%);
+  border-bottom:1px solid var(--wl-brass-lit);user-select:none}
+.terminal__mark{width:9px;height:9px;background:var(--wl-brass);flex:none}
+.terminal__title{font-size:15px;letter-spacing:.15em;text-transform:uppercase;color:var(--wl-ash);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.terminal__title b{color:var(--wl-bone);font-weight:400}
+.terminal__controls{margin-left:auto;display:flex;gap:5px;flex:none}
+.terminal__controls button{background:transparent;border:1px solid #2a251e;color:var(--wl-ash);
+  width:24px;height:19px;font-size:14px;line-height:1;cursor:pointer;padding:0;
+  font-family:var(--wl-font-data);display:flex;align-items:center;justify-content:center}
+.terminal__controls button:hover{border-color:var(--wl-brass-lit);color:var(--wl-brass-lit)}
+.terminal__controls button.x:hover{border-color:var(--wl-rust);color:var(--wl-rust)}
+.terminal__body{padding:15px 16px 20px;font-size:15px;line-height:1.62;color:#cfc9bb;
+  height:342px;overflow:auto;white-space:pre-wrap;word-break:break-word;
+  scrollbar-width:thin;cursor:text}
+.terminal[data-state=rolled] .terminal__body{display:none}
+.terminal[data-state=tall] .terminal__body{height:520px}
+.terminal__body span{white-space:pre-wrap}
+.terminal__line{display:block;min-height:1.62em}
+.terminal__user{color:var(--wl-brass-lit)}
+.terminal__host{color:var(--wl-ash)}
+.terminal__path{color:#7e97a8}
+.terminal__sigil{color:var(--wl-bone)}
+.terminal__cmd{color:var(--wl-bone)}
+.is-ok{color:var(--wl-verdigris)}
+.is-warn{color:#d8a24a}
+.is-bad{color:var(--wl-rust)}
+.is-dim{color:var(--wl-ash)}
+.is-accent{color:var(--wl-brass-lit)}
+.terminal__cursor{display:inline-block;width:8px;height:14px;background:var(--wl-brass-lit);
+  vertical-align:-2px;animation:term-blink 1.05s steps(1) infinite}
+@keyframes term-blink{0%,50%{opacity:1}50.01%,100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.terminal__cursor{animation:none}}
+/* --- 8, 9. strip the browser's own widgets out of our fields --- */
+input[type=number]{-moz-appearance:textfield;appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+input[type=search]::-webkit-search-decoration,
+input[type=search]::-webkit-search-cancel-button,
+input[type=search]::-webkit-search-results-button{-webkit-appearance:none;display:none}
+
+.stepper,.searchbox{position:relative;display:block;width:100%}
+.stepper input,.searchbox input{width:100%;padding-right:46px}
+.stepper .arrows{position:absolute;right:0;top:0;bottom:0;width:34px;
+  display:flex;flex-direction:column;border-left:1px solid #2a251e}
+.stepper .arrows button{flex:1;background:transparent;border:none;color:var(--wl-ash);
+  cursor:pointer;font-size:13px;line-height:1;padding:0;font-family:var(--wl-font-data)}
+.stepper .arrows button:hover{color:var(--wl-brass-lit);background:#17130d}
+.stepper .arrows button:first-child{border-bottom:1px solid #2a251e}
+.searchbox .clear{position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  background:transparent;border:none;color:var(--wl-ash);cursor:pointer;
+  font-family:var(--wl-font-data);font-size:17px;line-height:1;padding:7px 9px}
+.searchbox .clear:hover{color:var(--wl-brass-lit)}
+.searchbox .clear[hidden]{display:none}
+/* --- 1. the dropdown, built rather than borrowed --- */
+.listbox{position:relative;width:100%;font-family:var(--wl-font-body)}
+.listbox__button{width:100%;text-align:left;background:var(--wl-soot);
+  border:1px solid #2a251e;color:var(--wl-bone);font-family:var(--wl-font-body);font-size:16px;
+  padding:11px 38px 11px 13px;cursor:pointer;position:relative}
+.listbox__button:hover{border-color:#3a332a}
+.listbox[data-open=true] .listbox__button{border-color:var(--wl-brass-lit)}
+.listbox__button .caret{position:absolute;right:13px;top:50%;transform:translateY(-50%);
+  color:var(--wl-brass-lit);font-size:15px;transition:transform .16s ease}
+.listbox[data-open=true] .listbox__button .caret{transform:translateY(-50%) rotate(180deg)}
+.listbox__panel{position:absolute;left:0;right:0;top:calc(100% + 5px);z-index:40;
+  background:#0e0c09;border:1px solid var(--wl-brass-lit);
+  box-shadow:0 16px 34px rgba(0,0,0,.6);padding:5px;max-height:248px;overflow:auto}
+.listbox[data-open=false] .listbox__panel{display:none}
+.listbox__option{padding:9px 12px;font-size:16px;color:var(--wl-ash);cursor:pointer;
+  display:flex;align-items:center;gap:10px}
+.listbox__option:hover,.listbox__option[data-active=true]{background:#17130d;color:var(--wl-bone)}
+.listbox__option[aria-selected=true]{color:var(--wl-brass-lit)}
+.listbox__option .tick{font-family:var(--wl-font-data);font-size:16px;width:11px;
+  color:var(--wl-brass-lit);visibility:hidden;flex:none}
+.listbox__option[aria-selected=true] .tick{visibility:visible}
+.listbox__group{font-family:var(--wl-font-data);font-size:14px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--wl-ash);padding:10px 12px 5px}
+/* --- 17. color-mix is recent; state the plain colour first --- */
+.progress b{--wl-fill-img:repeating-conic-gradient(from 0deg at 50% 340%,
+   rgba(138,104,32,.22) 0deg .18deg,transparent .18deg 3.2deg)}
+@supports (color:color-mix(in srgb,red 50%,transparent)){
+  .progress b{--wl-fill-img:repeating-conic-gradient(from 0deg at 50% 340%,
+     color-mix(in srgb,var(--wl-brass) 22%,transparent) 0deg .18deg,
+     transparent .18deg 3.2deg)}}
+/* --- 15, 18. the entry reacts to its own column, and the table stacks --- */
+.register__entry,.specimen{container-type:inline-size;container-name:entry}
+@container entry (max-width: 430px){
+  .table thead,.table tr:first-child{display:none}
+  .table tr{display:block;border-bottom:1px solid var(--wl-soot);padding:7px 0}
+  .table td{display:flex;justify-content:space-between;gap:16px;border:none;padding:5px 0}
+  .table td::before{content:attr(data-label);color:var(--wl-ash);font-size:15px;
+    letter-spacing:.12em;text-transform:uppercase}
+  .table td:nth-child(1)::before{content:"Business"}
+  .table td:nth-child(2)::before{content:"Phone"}
+  .table td:nth-child(3)::before{content:"Standing"}
+}
+}

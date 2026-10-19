@@ -1,0 +1,38 @@
+# Formatting, clippy and every unit test, on every push and pull request.
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/webleads
+    steps:
+      - uses: actions/checkout@v4
+
+      # The compiler version comes from src/webleads/rust-toolchain.toml.
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+          targets: wasm32-unknown-unknown
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src/webleads
+
+      - name: format
+        run: cargo fmt --all --check
+
+      - name: clippy
+        run: cargo clippy --workspace --exclude webleads-ui --all-targets -- -D warnings
+
+      # The page is built for WebAssembly; its pure parts are tested natively below.
+      - name: clippy (page)
+        run: cargo clippy -p webleads-ui --target wasm32-unknown-unknown -- -D warnings
+
+      - name: tests
+        run: cargo test --workspace

@@ -1,0 +1,20 @@
+[package]
+name = "webleads-store"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+webleads-domain = { workspace = true }
+sqlx = { workspace = true }
+serde = { workspace = true }
+# The settings a run was asked to use are kept as the JSON the scraper is sent.
+serde_json = { workspace = true }
+time = { workspace = true }
+time-tz = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }

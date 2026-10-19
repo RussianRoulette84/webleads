@@ -1,0 +1,105 @@
+rank,tier,english,words_hu,words_en,no_site_odds,budget,note
+1,S,Plumbers,vízvezeték-szerelő,plumbing works;plumber,4,4,"Emergency work, people search on phone, huge job value [AE 1/20 with no site]"
+2,S,Electricians,villanyszerelő,electrical contracting;electrician,4,4,"Same as plumbers, licence-proud, loves a credibility page [AE 1/20 with no site]"
+3,S,Roofers,tetőfedő,roofing contractor;waterproofing works,4,5,"€10k+ jobs, almost never online, photo galleries sell hard"
+4,S,Heating & cooling,klímaszerelő;fűtésszerelő,AC repair;air conditioning repair;air duct cleaning,3,5,"Seasonal panic buying, big installs [AE 1/20 with no site]"
+5,S,Auto repair garages,autószerelő,car workshop;auto repair garage;car garage,4,4,"Very low tech, steady cash, local search is everything [AE 1/20 with no site]"
+6,S,Auto body / crash repair,karosszérialakatos,auto body repair;car denting painting,4,4,"Insurance work, high ticket"
+7,S,Tree surgeons,favágó;faápolás,tree trimming;landscaping gardening,5,4,"Almost never have a site, jobs are €500–3,000"
+8,S,Paving / driveways,térkövezés;aszfaltozás,interlock tiles;paving contractor,5,5,"Huge tickets, zero online presence, before/after photos sell"
+9,S,Concrete contractors,betonozás,concrete works;screed flooring,5,4,"Same story, very offline trade"
+10,S,Excavation / groundwork,földmunka,excavation works;earthworks contractor,5,5,"Machinery owners, cash-rich, invisible online"
+11,S,Drainage / septic,csatornatisztítás;szennyvízszippantás,drainage cleaning;sewerage tanker;sewage cleaning,5,4,"Urgent searches, no competition online"
+12,S,Well drilling,kútfúrás,borewell drilling,5,5,"Niche, expensive, nobody has a site"
+13,S,Fencing contractors,kerítésépítés,fencing contractor;chain link fencing,4,4,"Visual product, photos convert"
+14,S,Masonry / bricklayers,kőműves,marble and granite works,4,4,"Craft work, portfolio sells it [AE 1/20 with no site]"
+15,S,Landscaping / garden design,kertépítés,landscaping company;garden landscaping,3,4,"Very visual, high season spend"
+16,S,Painters & decorators,szobafestő;festő-mázoló,painting contractor;painter and decorator,4,3,"Everywhere, mostly offline"
+17,S,Flooring installers,padlóburkoló;parkettázás,flooring installation;parquet flooring,3,4,Showroom types pay well
+18,S,Tilers,burkoló;csempéző,tiling contractor;tile fixing,4,3,Portfolio-driven
+19,S,Glaziers / glass repair,üveges,aluminium and glass works;glass and aluminium,4,4,"Emergency calls, phone-first [AE 6/20 with no site]"
+20,S,Garage doors,garázskapu szerelés,garage door repair;shutter repair,4,4,Urgent + expensive
+21,A,Locksmiths,zárszerviz;lakatos,locksmith;key duplicate,3,4,Pure emergency search traffic
+22,A,Pest control,kártevőirtás;rovarirtás,pest control,3,4,"Urgent, recurring contracts"
+23,A,Chimney sweeps,kéményseprő,kitchen exhaust cleaning,5,3,"Ancient trade, zero online"
+24,A,Movers / removals,költöztetés,packers and movers;movers,3,4,"Compare-quotes market, needs a site badly [AE 1/20 with no site]"
+25,A,Junk & rubbish removal,lomtalanítás,junk removal;debris removal,4,3,Impulse calls
+26,A,Skip / container hire,konténer rendelés;sittszállítás,dumpster rental;skip hire,4,4,"Local monopolies, easy sell"
+27,A,Towing & recovery,autómentő,car recovery;towing service,4,4,Phone-first emergency
+28,A,Scrap yards / salvage,autóbontó,used car parts;auto spare parts used,5,4,"Cash businesses, totally offline [AE 8/20 with no site]"
+29,A,Welding & fabrication,hegesztés;lakatosműhely,welding workshop;steel fabrication,5,3,"B2B work, no marketing at all [AE 6/20 with no site]"
+30,A,Machine shops / CNC,CNC megmunkálás,CNC machining;machine shop,4,4,"B2B, a site wins tenders"
+31,A,Carpenters / joiners,asztalos,carpentry workshop;carpenter,4,3,Portfolio trade [AE 5/20 with no site]
+32,A,Cabinet makers,konyhabútor készítés;bútorasztalos,kitchen cabinets;joinery workshop,3,4,Kitchen jobs are €5k+
+33,A,Upholstery & furniture repair,kárpitos,car upholstery;upholstery workshop,5,2,"Dying trade, loves visibility [AE 7/20 with no site]"
+34,A,Appliance repair,háztartási gép szerviz,washing machine repair;home appliance repair,4,3,Urgent searches
+35,A,Pool building & maintenance,medenceépítés,swimming pool maintenance;pool cleaning,3,5,Rich clientele
+36,A,Gutter cleaning / repair,ereszcsatorna tisztítás,gutter cleaning,5,3,"Seasonal, easy upsell"
+37,A,Pressure washing,magasnyomású mosás,pressure washing;facade cleaning,4,3,Very visual before/after
+38,A,Window cleaning,ablaktisztítás,window cleaning;glass cleaning,4,3,Contract work
+39,A,Carpet cleaning,szőnyegtisztítás,carpet cleaning;sofa cleaning,3,3,Recurring
+40,A,Commercial cleaning,irodatakarítás;takarítás,office cleaning;cleaning company,3,4,"B2B contracts, site = credibility"
+41,A,Alarm installers,riasztórendszer telepítés,alarm system installation;fire alarm company,3,4,Trust-based sale
+42,A,CCTV installers,kamerarendszer telepítés,CCTV installation;security camera installation,3,4,Same
+43,A,Solar panel installers,napelem telepítés,solar panel installation,2,5,"Big money, but many already online"
+44,A,Insulation contractors,homlokzatszigetelés;szigetelés,thermal insulation;waterproofing and insulation,4,4,Grant-driven demand
+45,A,Scaffolding hire,állványozás,scaffolding,4,4,"B2B, invisible online [AE 3/20 with no site]"
+46,B,Butchers,hentes;húsbolt,butchery;fresh meat shop,5,2,Almost never online
+47,B,Bakeries,pékség,bakery;arabic bakery,4,2,Loves photos
+48,B,Fishmongers,halbolt,fish market;fresh fish shop,5,2,Very offline
+49,B,Greengrocers,zöldséges,vegetable shop;fruit and vegetable market,5,2,Very offline
+50,B,Delis / specialty food,csemegebolt,delicatessen;specialty food store,4,2,"Story-driven, sells well"
+51,B,Restaurants & takeaways,étterem;büfé,restaurant;cafeteria,5,2,Menu page alone is worth it
+52,B,Pizzerias,pizzéria,pizzeria;pizza restaurant,4,3,Ordering page = direct money
+53,B,Cafés,kávézó,cafe;coffee shop,4,2,"Instagram-only, needs a real site"
+54,B,Food trucks,food truck;mozgó büfé,food truck,5,1,"Location page, tiny budget"
+55,B,Caterers,rendezvény catering,catering services,4,3,"Event bookings, high value"
+56,B,Convenience stores,kisbolt;élelmiszerbolt,grocery;baqala,5,1,"Low need, low budget [AE 5/19 with no site]"
+57,B,Wine & liquor shops,borüzlet;italbolt,liquor store,4,3,Can sell online
+58,B,Laundromats,önkiszolgáló mosoda,laundry,5,2,Price + hours page [AE 2/20 with no site]
+59,B,Dry cleaners,ruhatisztító;tisztító,dry cleaning;laundry and dry cleaning,4,2,Pickup/delivery booking
+60,B,Tailors & alterations,szabó;ruhajavítás,tailoring shop;alterations tailor,5,2,Zero online presence [AE 2/20 with no site]
+61,B,Cobblers,cipész,shoe repair;cobbler,5,1,Dying trade
+62,B,Watch & jewellery repair,órás;ékszerjavítás,watch repair;jewellery repair,4,3,"High-trust, good margins"
+63,B,Phone repair,telefonszerviz,mobile phone repair,3,2,Price-list page
+64,B,Computer repair,számítógép szerviz,computer repair;laptop repair,3,3,Ironically often no site
+65,B,Print & copy shops,nyomda;fénymásolás,printing press;typing centre,3,3,Should have online ordering
+66,B,Sign makers,cégtábla;reklámtábla készítés,sign board making;signage,3,4,"B2B, portfolio-driven [AE 4/20 with no site]"
+67,B,Engraving & trophies,gravírozás;kupa,engraving services;trophies and awards,5,2,Extremely offline
+68,B,Florists,virágbolt,flower shop;florist,3,3,Online ordering = real revenue
+69,B,Hardware stores,vasbolt;barkácsbolt,hardware store;building materials shop,4,3,Local monopoly
+70,B,Paint stores,festékbolt,paint shop;paints trading,4,3,Trade counters
+71,B,Garden centres,kertészet;faiskola,plant nursery;garden centre,3,4,"Seasonal, visual"
+72,B,Farm & feed supply,takarmánybolt;gazdabolt,animal feed shop;pet and feed supplies,5,3,"Rural, invisible online"
+73,B,Bike repair,kerékpárszerviz,bicycle repair;bicycle shop,4,2,Small but loyal
+74,B,Motorcycle repair,motorszerviz,motorcycle repair;bike workshop,4,3,Enthusiast market
+75,B,Mower & small engine repair,fűnyíró szerviz;kisgépjavítás,small engine repair;generator repair,5,2,Very offline
+76,C,Auto detailing,autókozmetika,car polishing;auto detailing,4,2,Instagram-first
+77,C,Car washes,autómosó,car wash,4,2,Little need for a site [AE 1/20 with no site]
+78,C,Tyre shops,gumiszerviz,tyre shop;tyre repair,3,3,Chains dominate [AE 1/20 with no site]
+79,C,Driving schools,autósiskola,driving school,4,2,Word of mouth works fine
+80,C,Boat repair / marinas,hajószerviz;kikötő,boat repair;marine services,3,4,"Good money, tiny market"
+81,C,Trailer sales & repair,utánfutó,trailer repair,4,3,Niche
+82,C,Pet boarding,kutyapanzió,pet boarding;pet hotel,3,3,Booking page is useful
+83,C,Pet groomers,kutyakozmetika,pet grooming,4,2,Instagram-first
+84,C,Dog trainers,kutyaiskola,dog training,4,2,Solo operators
+85,C,Handyman,ezermester,handyman services;technical services,5,2,"One-man bands, no budget"
+86,C,Residential cleaning,házi takarítás,house cleaning;maid service,4,2,Race to the bottom on price
+87,C,Snow removal,hóeltakarítás,,5,2,Seasonal only [no English words: nothing to shovel in the Gulf]
+88,C,Massage,masszázs,massage centre,4,2,Booking apps replace sites
+89,C,Physiotherapists,gyógytornász;fizioterápia,physiotherapy centre,3,3,Often in a clinic already
+90,C,Chiropractors,csontkovács;kiropraktőr,chiropractic clinic,3,3,Same
+91,C,Nail salons,műköröm;körmös,nail salon;nail spa,5,1,"Instagram-only, near-zero budget"
+92,C,Barbers,borbély;barbershop,barber shop;gents salon,5,1,"Famous for no site, no money [edited through the page]"
+93,C,Hair salons,fodrászat,hair salon;ladies salon,4,2,Booking apps cover them
+94,C,Beauty salons,szépségszalon;kozmetika,beauty salon;beauty centre,4,2,Instagram-first
+95,C,Tanning salons,szolárium,tanning salon,4,2,Declining industry
+96,C,Tattoo studios,tetováló szalon,tattoo studio,4,2,Instagram is their portfolio
+97,C,Piercing studios,piercing szalon,piercing studio,4,1,Tiny
+98,C,Martial arts,küzdősport terem;harcművészet,martial arts;boxing gym,3,2,Community-driven
+99,C,Dance studios,tánciskola,dance studio;dance academy,3,2,Facebook groups work
+100,C,Music teachers,zeneiskola;magánoktatás,music institute;music lessons,5,1,No money at all
+101,S,Abaya & kandura tailors,,abaya tailor;kandura tailor;abaya shop,5,3,"Gulf trade, no Hungarian equivalent [AE 10/20 with no site]"
+102,A,False ceiling & partitions,,false ceiling;gypsum partition,3,4,"Gulf trade, no Hungarian equivalent [AE 4/19 with no site]"
+103,B,Water tank cleaning,,water tank cleaning,2,3,"Gulf trade, no Hungarian equivalent [AE 2/20 with no site]"
+104,C,Curtain & blinds shops,,curtain shop;blinds and curtains,1,3,"Gulf trade, no Hungarian equivalent [AE 0/20 with no site]"

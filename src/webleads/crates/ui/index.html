@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webleads</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+
+<!-- The stylesheet: the same files the design sheet is built from, not a copy. -->
+<link data-trunk rel="copy-dir" href="../../../web/css"/>
+<link data-trunk rel="copy-dir" href="../../../web/img"/>
+<link data-trunk rel="copy-dir" href="../../../web/fonts"/>
+<link data-trunk rel="copy-dir" href="../../../web/vendor"/>
+<!-- The prism beam over the header artwork. -->
+<link data-trunk rel="copy-dir" href="../../../web/js"/>
+<script src="/js/prism.js" defer></script>
+<link rel="stylesheet" href="/css/app.css">
+
+<!-- Leaflet 1.9.4, the map: free, no API key, not Google, and served from the project. -->
+<link rel="stylesheet" href="/vendor/leaflet/leaflet.css"/>
+<script src="/vendor/leaflet/leaflet.js"></script>
+<link data-trunk rel="copy-file" href="map.js"/>
+<script src="/map.js" defer></script>
+<style>
+  /* The page frame. Everything else comes from the stylesheet in web/css. */
+  /* The browser's own widgets — the date-and-time field's calendar, the scrollbars —
+     arrive white unless they are told the page is dark. One line, and they match. */
+  :root{color-scheme:dark}
+  body{background:var(--wl-ink);color:var(--wl-bone);font-family:var(--wl-font-body);
+       margin:0;padding:0 22px 28px}
+  /* Everything except the artwork sits above the prism, so the beam lights the
+     doorway and leaves the reading alone. */
+  body > *:not(.hero){position:relative;z-index:3}
+  .hero{z-index:1}
+
+  /* The artwork runs to all four edges; everything after it keeps the gutter. */
+  .hero{margin-bottom:0}
+  .masthead{margin-top:0}
+  /* Leptos mounts the header and the panel as siblings of body, so the width is
+     set on them rather than on a wrapper that does not exist. */
+  /* The whole screen, with just enough gutter that text does not start at the very
+     edge. The table needs the room; every column fits without scrolling sideways. */
+  body > *{max-width:none;margin-left:auto;margin-right:auto}
+/* The prism lights the doorway and nothing else: laid exactly over the artwork at the
+   top of the page, and scrolling away with it. */
+#prism-canvas{position:absolute;top:0;left:0;width:100%;height:var(--wl-hero-h);z-index:2;
+          pointer-events:none;mix-blend-mode:screen;opacity:.40;display:block}
+body.is-prism-css #prism-canvas{background:
+  radial-gradient(60% 90% at 14% 46%,rgba(138,104,32,.22),transparent 70%),
+  conic-gradient(from -14deg at 16% 50%,transparent 0deg,rgba(201,150,47,.16) 6deg,
+                 rgba(232,226,212,.12) 14deg,transparent 26deg);
+  background-size:100% 140%;
+  animation:prism-sway 14s ease-in-out infinite alternate}
+@keyframes prism-sway{from{background-position:0 0}to{background-position:0 100%}}
+@media (prefers-reduced-motion:reduce){body.is-prism-css #prism-canvas{animation:none}}
+/* The glow drifts a tenth of the screen up and down over fourteen seconds. On a
+   desktop it reads as light; held in one hand it reads as the page moving. */
+@media (max-width:900px){body.is-prism-css #prism-canvas{animation:none}}
+.register{position:relative;z-index:1}
+
+/* --- the hero: full width of the window, whatever the column does ---
+   Cut at the door's sill, so the brass line is the doorstep rather than a strip of
+   empty street below the door. */
+/* The artwork is 1600 by 300 and the sill is 239 down it. Past 1600 wide it is drawn
+   taller rather than cropped, so the cut stays on the sill at every width. */
+:root{--wl-hero-art:max(300px,18.75vw);--wl-hero-h:calc(var(--wl-hero-art) * 239 / 300)}
+.hero{position:relative;width:100vw;margin-left:calc(50% - 50vw);height:var(--wl-hero-h);
+         overflow:hidden;border-bottom:1px solid var(--wl-brass-lit)}
+.hero__svg{display:block;width:100%;height:var(--wl-hero-art)}
+.hero .legend{position:absolute;left:0;right:0;bottom:16px;text-align:center;
+         font-family:var(--wl-font-head);font-style:italic;font-size:18px;color:var(--wl-brass-lit);
+         text-shadow:0 1px 6px rgba(0,0,0,.85)}
+.masthead__mark{width:96px;height:auto;display:block;margin:0 auto 4px;position:relative}
+
+/* --- corner brackets + lozenge rules --- */
+.corner{position:absolute;width:14px;height:14px;border:1px solid var(--wl-brass);pointer-events:none}
+.corner.tl{top:-1px;left:-1px;border-right:0;border-bottom:0}
+.corner.tr{top:-1px;right:-1px;border-left:0;border-bottom:0}
+.corner.bl{bottom:-1px;left:-1px;border-right:0;border-top:0}
+.corner.br{bottom:-1px;right:-1px;border-left:0;border-top:0}
+.lozenge{position:absolute;color:var(--wl-brass);font-size:12px;line-height:1;
+       background:var(--wl-ink);padding:2px;pointer-events:none;font-style:normal}
+.lozenge.t{top:-5px;left:50%;transform:translateX(-50%)}
+.lozenge.b{bottom:-5px;left:50%;transform:translateX(-50%)}
+.lozenge.l{left:-5px;top:50%;transform:translateY(-50%)}
+.lozenge.r{right:-5px;top:50%;transform:translateY(-50%)}
+
+/* --- masthead: the one symmetrical moment ---
+   A brass plate with stepped Deco corners: a brass layer, an ink layer inset by a
+   hair, both cut to the same notched outline, giving one continuous engraved edge. */
+.masthead{position:relative;background:var(--wl-brass-lit);padding:1px;margin-top:46px;
+          clip-path:polygon(18px 0,calc(100% - 18px) 0,100% 18px,100% calc(100% - 18px),
+                    calc(100% - 18px) 100%,18px 100%,0 calc(100% - 18px),0 18px)}
+.masthead__inner{position:relative;overflow:hidden;padding:40px 34px 32px;text-align:center;
+          background:linear-gradient(180deg,#17130d 0%,#0c0b08 100%);
+          clip-path:polygon(18px 0,calc(100% - 18px) 0,100% 18px,100% calc(100% - 18px),
+                    calc(100% - 18px) 100%,18px 100%,0 calc(100% - 18px),0 18px)}
+.masthead__inner::before{content:"";position:absolute;inset:8px;pointer-events:none;
+          border:1px solid rgba(201,150,47,.30);
+          clip-path:polygon(12px 0,calc(100% - 12px) 0,100% 12px,100% calc(100% - 12px),
+                    calc(100% - 12px) 100%,12px 100%,0 calc(100% - 12px),0 12px)}
+.masthead__rays{position:absolute;inset:0;overflow:hidden;opacity:.09;pointer-events:none;
+         -webkit-mask-image:linear-gradient(180deg,#000 0%,transparent 78%);
+         mask-image:linear-gradient(180deg,#000 0%,transparent 78%)}
+.masthead__rays::after{content:"";position:absolute;left:50%;top:-150%;width:260%;height:260%;
+          transform:translateX(-50%);
+          background:repeating-conic-gradient(from 0deg at 50% 50%,
+                     var(--wl-brass) 0deg .55deg,transparent .55deg 11deg)}
+.masthead h1{font-family:var(--wl-font-head);font-size:61px;font-weight:600;letter-spacing:.14em;
+             line-height:1;position:relative;text-indent:.14em}
+.masthead .sub{font-family:var(--wl-font-head);font-style:italic;font-size:24px;color:var(--wl-brass);
+               margin-top:8px;position:relative}
+.masthead .ded{font-family:var(--wl-font-body);font-size:15.5px;color:var(--wl-ash);margin-top:16px;
+               position:relative;max-width:56ch;margin-left:auto;margin-right:auto}
+
+/* The display face, on the masthead and nowhere else — as the sheet does it. */
+.masthead h1{font-family:var(--wl-font-display);letter-spacing:.05em;text-indent:.05em;font-weight:400}
+.masthead .sub{font-family:var(--wl-font-display);font-style:normal;letter-spacing:.03em}
+
+/* The fleuron: a section rule with the mark in the middle of it. */
+.fleuron{display:flex;align-items:center;gap:14px;margin:26px 0;color:var(--wl-brass);font-size:15px}
+.fleuron::before,.fleuron::after{content:"";flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--wl-brass),transparent)}
+
+/* The page is lit from the top left, like the rest of it. */
+body{background:
+  radial-gradient(70vw 50vh at 12% 0%,rgba(138,104,32,.10),transparent 70%),
+  var(--wl-ink)}
+
+/* The word that says what a filter hides. It was written with a class name no
+   stylesheet has ever defined, so it has never been styled. */
+.is-muted{color:var(--wl-ash)}
+
+  /* The sheet draws a slider as an ornament; a real one is an `input`, and without
+     these it arrives in the browser's own blue. */
+  input[type=range].slider{-webkit-appearance:none;appearance:none;height:14px;
+    background:transparent;cursor:pointer;padding:0}
+  input[type=range].slider::-webkit-slider-runnable-track{height:1px;background:var(--wl-line)}
+  input[type=range].slider::-moz-range-track{height:1px;background:var(--wl-line)}
+  input[type=range].slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:3px;height:13px;background:var(--wl-brass-lit);border:0;border-radius:0;margin-top:-6px}
+  input[type=range].slider::-moz-range-thumb{width:3px;height:13px;background:var(--wl-brass-lit);
+    border:0;border-radius:0}
+  input[type=range].slider:focus-visible{outline:1px solid var(--wl-brass);outline-offset:4px}
+
+  /* The switch is drawn by the stylesheet; the checkbox behind it does the work and
+     should not be seen doing it. */
+  .switch input{position:absolute;opacity:0;width:0;height:0}
+  .switch span{transition:background .15s ease}
+  .switch input:checked + span{background:var(--wl-brass)}
+  .switch input:checked + span b{transform:translateX(20px);background:var(--wl-ink)}
+  .switch span b{transition:transform .15s ease}
+  .switch input:focus-visible + span{outline:1px solid var(--wl-brass);outline-offset:3px}
+
+  /* The trade list is a panel in its own right here, not a dropdown over the page. */
+  .listbox__panel{border-color:#2a251e}
+
+  /* A chosen trade is a tag, not a button: transparent, a brass outline, and small.
+     As a bare `button` it was picking up the browser's own grey fill. */
+  .wl-tag{background:transparent;color:var(--wl-brass);border:1px solid var(--wl-brass);
+    font-family:var(--wl-font-body);font-size:13px;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 8px;border-radius:0;cursor:pointer;line-height:1.35}
+  .wl-tag:hover{color:var(--wl-brass-lit);border-color:var(--wl-brass-lit)}
+
+  /* The words you add sit in the same floating box as the trades, so the two halves
+     of the choice look like one thing. */
+  .wl-float{background:#0e0c09;border:1px solid #2a251e;box-shadow:0 16px 34px rgba(0,0,0,.6);
+    padding:12px}
+
+  /* ---- the row ---- */
+  /* Alternate tint, so the eye keeps its line across eleven columns. */
+  table.table tbody tr.wl-row:nth-child(even) td{background:rgba(255,255,255,.018)}
+  /* A hairline every other row rather than under every one. */
+  table.table tbody tr.wl-row td{border-bottom:0}
+  table.table tbody tr.wl-row:nth-child(even) td{border-bottom:1px solid var(--wl-line)}
+  /* Air. Ten pixels was a squeeze at this size. */
+  table.table tbody tr.wl-row td{padding:14px 12px}
+  /* The row under the pointer takes a brass edge. */
+  table.table tbody tr.wl-row:hover td{background:rgba(201,150,47,.07)}
+  table.table tbody tr.wl-row:hover td:first-child{box-shadow:inset 3px 0 0 var(--wl-brass-lit)}
+  /* Where the business has got to, as the row's own edge rather than a control in
+     the middle of the line. Six states, three shades and two fades — a colour each
+     would be a Christmas tree. Nothing is drawn for "to call": most of the list is
+     in that state, and an edge on every row is an edge on none. */
+  table.table tbody tr.wl-not_reached td:first-child{box-shadow:inset 3px 0 0 var(--wl-ash)}
+  table.table tbody tr.wl-follow_up td:first-child{box-shadow:inset 3px 0 0 var(--wl-brass)}
+  /* Waiting on them rather than on you: the same brass, half lit. */
+  table.table tbody tr.wl-they_call td:first-child{box-shadow:inset 3px 0 0 color-mix(in srgb,var(--wl-brass) 55%,transparent)}
+  table.table tbody tr.wl-sold td:first-child{box-shadow:inset 3px 0 0 var(--wl-verdigris)}
+  table.table tbody tr.wl-not_interested td{opacity:.55}
+  table.table tbody tr.wl-dead td{opacity:.45}
+  /* The name is the one thing the eye should land on. */
+  .wl-name{font-family:var(--wl-font-head);font-size:19px;line-height:1.2;color:var(--wl-bone)}
+  /* Figures read as a column of figures. */
+  table.table tbody tr.wl-row td:nth-child(6),
+  table.table tbody tr.wl-row td:nth-child(7){font-family:var(--wl-font-data);font-size:14px}
+  /* The doings, lined up. The width comes from the percentages below, with everything
+     else, rather than from one column arguing with them. */
+  .wl-doings__row{display:flex;gap:3px;align-items:center;justify-content:flex-end;
+    flex-wrap:wrap}
+
+  /* ---- the picture of their website ---- */
+  .wl-shot{position:relative;display:inline-flex}
+  /* The thumbnail, while the pointer is on the button. Small on purpose: it is there
+     to tell you whether the picture is worth opening. */
+  .wl-shot__peek{position:absolute;right:0;bottom:calc(100% + 5px);z-index:60;
+    background:var(--wl-ink);border:1px solid var(--wl-brass);padding:3px;
+    box-shadow:0 14px 30px rgba(0,0,0,.7);line-height:0}
+  .wl-shot__peek img{display:block;max-width:150px;height:auto}
+  /* And the whole thing, over the page. */
+  .wl-shot__full{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:10px;background:rgba(0,0,0,.88);
+    cursor:zoom-out;padding:20px}
+  .wl-shot__full img{max-width:90vw;max-height:90vh;width:auto;height:auto;
+    border:1px solid var(--wl-brass);cursor:default}
+  .wl-shot__said{font-size:14px;color:var(--wl-ash);font-family:var(--wl-font-data)}
+
+  /* The way out to their own website, beside the reason they are on the list. */
+  .wl-why{display:flex;align-items:flex-start;gap:6px}
+  .link.wl-out{font-size:15px;text-decoration:none;flex:none;line-height:1.5}
+  /* Everything in this column is small and wraps, because the column is narrow and
+     the table must never scroll sideways. */
+  td.wl-doings .btn{font-size:13px;padding:4px 7px}
+  .btn.wl-icon{font-size:15px;line-height:1;padding:5px 8px;min-width:30px;text-align:center}
+  .wl-more{right:0;left:auto;min-width:190px;top:calc(100% + 3px)}
+
+  /* A table of leads needs room to breathe; the columns wrap badly without it. */
+  table.table th, table.table td{padding:10px 12px;vertical-align:top}
+  table.table td strong{display:block;margin-bottom:2px}
+  /* The table shares out the window rather than growing past it: fixed layout means
+     the percentages below decide the widths, and anything long wraps inside its own
+     cell instead of pushing the table sideways. */
+  table.wl-table{table-layout:fixed;width:100%}
+  /* Eleven columns and eleven headings. They were nine against ten, so every width
+     below was lining up against the wrong column. The state column is the widest of
+     the small ones because it holds six rows now rather than one closed button. */
+  table.wl-table th:nth-child(1),table.wl-table td:nth-child(1){width:18%}
+  table.wl-table th:nth-child(2),table.wl-table td:nth-child(2){width:7%}
+  table.wl-table th:nth-child(3),table.wl-table td:nth-child(3){width:9%}
+  table.wl-table th:nth-child(4),table.wl-table td:nth-child(4){width:10%}
+  table.wl-table th:nth-child(5),table.wl-table td:nth-child(5){width:8%}
+  table.wl-table th:nth-child(6),table.wl-table td:nth-child(6){width:5%}
+  table.wl-table th:nth-child(7),table.wl-table td:nth-child(7){width:5%}
+  table.wl-table th:nth-child(8),table.wl-table td:nth-child(8){width:8%}
+  table.wl-table th:nth-child(9),table.wl-table td:nth-child(9){width:16%}
+  table.wl-table th:nth-child(10),table.wl-table td:nth-child(10){width:9%}
+  table.wl-table th:nth-child(11),table.wl-table td:nth-child(11){width:5%}
+  /* Long words — a Hungarian trade name, a web address — break rather than overflow. */
+  table.wl-table td{overflow-wrap:anywhere}
+  /* The counted things read against the right edge, as figures should. A class
+     rather than an inline style, so a narrow screen can say otherwise. */
+  table.wl-table td.wl-cell--figure{text-align:right}
+
+  /* Which town and country a match is in, on its own line under the full address.
+     Without the old Hungary-only fence, "Downtown Dubai" also matches Astana. */
+  .wl-find__where{display:block;font-size:14px;color:var(--wl-brass);margin-top:2px}
+  /* The city a new area will belong to, under the matches. */
+  .wl-find__city{display:flex;align-items:center;gap:8px;margin:8px 0 10px;
+    font-size:15px}
+  .wl-find__cityname{width:auto;flex:1;max-width:260px;font-size:15px;padding:5px 8px}
+
+  /* ---- the state of a lead ---- */
+  /* Six rows, all of them on the screen. Nothing opens, so nothing can cover the
+     row it belongs to — which is what the dropdown did on a phone. */
+  td.wl-statecell{position:relative}
+  .wl-state{width:100%}
+  .wl-state__rows{display:flex;flex-direction:column;border:1px solid #2a251e;
+    background:var(--wl-soot)}
+  .wl-state__row{display:flex;align-items:center;gap:7px;padding:6px 8px;
+    font-size:14px;line-height:1.3;cursor:pointer;color:var(--wl-ash);
+    border-bottom:1px solid rgba(255,255,255,.04)}
+  .wl-state__row:last-child{border-bottom:0}
+  .wl-state__row:hover{background:#17130d;color:var(--wl-bone)}
+  /* The one it is in: brass, and the only tick showing. Everything else keeps the
+     space so the six rows do not shift about as you press them. */
+  .wl-state__row .tick{visibility:hidden;color:var(--wl-brass-lit);font-size:13px;
+    flex:none;width:11px}
+  .wl-state__row[aria-selected=true]{color:var(--wl-brass-lit);
+    background:rgba(201,150,47,.09)}
+  .wl-state__row[aria-selected=true] .tick{visibility:visible}
+  /* The name takes what is left; whatever the row carries sits against the right —
+     or goes under the name when the two do not fit, so the name is never squeezed
+     into one letter a line. */
+  .wl-state__row{flex-wrap:wrap}
+  .wl-state__name{flex:1;min-width:min-content;overflow-wrap:normal}
+  /* While the calendar is open the field always takes its own line, the full width
+     of the row, under the name. */
+  .wl-state__row:has(.wl-when__field){padding-left:4px;padding-right:4px}
+  .wl-state__row:has(.wl-when__field) .wl-state__name{flex:1 0 calc(100% - 18px);
+    padding-left:4px}
+  .wl-state__row:has(.wl-when__field) .wl-when{flex:1 1 100%;min-width:0;
+    justify-content:flex-start}
+  .wl-state__row:has(.wl-when__field) .wl-when__field{flex:1 1 100%;min-width:0;
+    width:100%;max-width:100%;box-sizing:border-box;font-size:12px;padding:3px 3px}
+  /* What the state carries, under the rows: rung four times. */
+  .wl-state__said{font-size:14px;line-height:1.35;margin-top:4px}
+  /* Everything else on the page catches the press that closes it. Invisible, under
+     the panel, over the rest. */
+  .wl-away{position:fixed;inset:0;z-index:39}
+
+  /* The stepper the design sheet drew and nothing had ever used. */
+  .wl-step{display:inline-flex;align-items:center;gap:2px;border:1px solid #2a251e;
+    background:var(--wl-soot)}
+  .wl-step__arrow{background:transparent;border:0;color:var(--wl-ash);cursor:pointer;
+    font-family:var(--wl-font-data);font-size:14px;line-height:1;padding:3px 7px}
+  .wl-step__arrow:hover{color:var(--wl-brass-lit);background:#17130d}
+  .wl-step__count{font-family:var(--wl-font-data);font-size:14px;color:var(--wl-bone);
+    min-width:14px;text-align:center}
+
+  /* The ring-back time: a word you can read, and the browser's own field behind a
+     press. Wrapping is allowed — on a phone the field and its DONE will not both fit
+     beside the name of the state. */
+  .wl-when{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;
+    justify-content:flex-end}
+  /* Shut. Reads as the time, underlined like the link it behaves as. */
+  .wl-when__shown{background:transparent;border:0;border-bottom:1px dashed var(--wl-brass);
+    color:var(--wl-brass-lit);cursor:pointer;font-family:var(--wl-font-data);
+    font-size:13px;line-height:1.3;padding:1px 2px;white-space:nowrap}
+  .wl-when__shown:hover{color:var(--wl-bone);border-bottom-color:var(--wl-brass-lit)}
+  .wl-when__field{background:var(--wl-ink);border:1px solid var(--wl-brass);
+    color:var(--wl-bone);font-family:var(--wl-font-data);font-size:13px;
+    padding:3px 5px;border-radius:0;width:auto;flex:none}
+  .wl-when__field:focus{outline:1px solid var(--wl-brass);outline-offset:1px}
+  /* The way out of the calendar that is not "choose a date". */
+  .wl-when__done{background:transparent;border:1px solid var(--wl-brass);
+    color:var(--wl-brass);cursor:pointer;font-family:var(--wl-font-data);
+    font-size:12px;letter-spacing:.1em;line-height:1;padding:4px 7px}
+  .wl-when__done:hover{color:var(--wl-brass-lit);border-color:var(--wl-brass-lit)}
+  .wl-when__clear{background:transparent;border:0;color:var(--wl-ash);cursor:pointer;
+    font-size:14px;line-height:1;padding:2px 4px}
+  .wl-when__clear:hover{color:var(--wl-brass-lit)}
+
+  /* Your own words, in a column of their own. */
+  /* The notes box fills its cell from top to bottom, so it is exactly as tall as the
+     list of states beside it and never makes the row taller. The phone layout below
+     puts it back in the flow. */
+  td.wl-notecell{vertical-align:top;position:relative}
+  textarea.wl-note{position:absolute;inset:9px 10px;width:auto;height:auto;min-height:0;
+    font-size:15px;resize:none}
+
+  /* Where the next search will look and in what language, under the picker. Brass
+     rather than dim: getting this wrong costs an afternoon. */
+  .wl-picked__lang{color:var(--wl-brass);margin-top:6px}
+
+  /* What the shop itself says its hours are, under the hours on your own clock. */
+  .wl-hours__there{font-size:13px;opacity:.75}
+
+  /* ---- the trade list, to read and to edit ---- */
+  .wl-trades{margin-top:16px;padding-top:14px;border-top:1px solid var(--wl-line)}
+  .wl-trades__bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .wl-trades__count{font-family:var(--wl-font-data);font-size:13px;
+    letter-spacing:.06em}
+  .wl-trades__tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;
+    margin:12px 0 10px}
+  .wl-trades__find{width:auto;flex:1;min-width:180px;max-width:320px;font-size:15px;
+    padding:6px 9px}
+  /* A hundred rows of eight fields is taller than a screen and wider than a phone,
+     so it scrolls inside its own box rather than stretching the page. */
+  .wl-trades__scroll{max-height:60vh;overflow:auto;border:1px solid var(--wl-line)}
+  table.wl-trades__table{width:100%;table-layout:auto}
+  table.wl-trades__table th{position:sticky;top:0;background:var(--wl-ink);z-index:1;
+    font-size:12px;letter-spacing:.1em;white-space:nowrap}
+  table.wl-trades__table th, table.wl-trades__table td{padding:4px 6px}
+  .wl-trades__row:nth-child(even) td{background:rgba(255,255,255,.015)}
+  /* The fields themselves: plain and tight, because there are eight hundred of them
+     and a bordered box round each would read as a form rather than a list. */
+  .wl-trades__table .field{background:transparent;border:1px solid transparent;
+    color:var(--wl-bone);font-size:14px;padding:3px 5px;border-radius:0}
+  .wl-trades__table .field:hover{border-color:#2a251e}
+  .wl-trades__table .field:focus{border-color:var(--wl-brass);background:var(--wl-soot);
+    outline:none}
+  .wl-trades__num{width:56px;font-family:var(--wl-font-data);text-align:right}
+  .wl-trades__tier{width:64px;font-size:14px;padding:3px 5px}
+  .wl-trades__name{width:100%;min-width:150px}
+  .wl-trades__words{width:100%;min-width:170px;font-family:var(--wl-font-data);
+    font-size:13px}
+  .wl-trades__note{width:100%;min-width:200px;font-size:13px;color:var(--wl-ash)}
+  .wl-trades__out{font-size:14px;padding:3px 7px;line-height:1}
+
+  /* ---- the terminal, and the buttons under it ---- */
+  .wl-console{margin:0 0 24px}
+  /* The window's own look is the stylesheet's — see the terminal rules in
+     web/css/components.css, drawn for the design sheet and never used until now. */
+  .wl-term .terminal__branch{color:var(--wl-verdigris)}
+  /* Two points smaller than the sheet's, and the rows closed up: this window shows
+     hundreds of lines and every pixel of leading is a line you cannot see. */
+  .wl-term .terminal__body{height:280px;font-size:13px;line-height:1.38;
+    padding:10px 14px 14px}
+  .wl-term .terminal__line{min-height:1.38em}
+  /* The tick-box that opens the fine detail, in the title bar where it belongs. */
+  .wl-term__debug{display:flex;align-items:center;gap:5px;margin-left:auto;
+    font-family:var(--wl-font-data);font-size:13px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--wl-ash);cursor:pointer;user-select:none}
+  .wl-term__debug input{accent-color:var(--wl-brass);cursor:pointer;margin:0}
+
+  .wl-console__buttons{display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+    margin-top:14px}
+  /* The one button on this page that should be impossible to miss: the whole width,
+     cut to the masthead's stepped corners, with the same engraved line inside. */
+  .btn.wl-scrape{flex:1 1 100%;position:relative;font-size:17px;letter-spacing:.18em;
+    padding:16px 26px;background:var(--wl-brass);color:var(--wl-ink);border:0;
+    clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 14px,100% calc(100% - 14px),
+              calc(100% - 14px) 100%,14px 100%,0 calc(100% - 14px),0 14px)}
+  .btn.wl-scrape::before{content:"";position:absolute;inset:5px;pointer-events:none;
+    border:1px solid rgba(11,10,8,.45);
+    clip-path:polygon(10px 0,calc(100% - 10px) 0,100% 10px,100% calc(100% - 10px),
+              calc(100% - 10px) 100%,10px 100%,0 calc(100% - 10px),0 10px)}
+  .btn.wl-scrape:hover:not(:disabled){background:var(--wl-brass-lit)}
+  .btn.wl-scrape:disabled{background:transparent;color:var(--wl-ash);
+    border-color:#2a251e}
+  /* Under SCRAPE NOW: can a search be started, and if not, what to type. */
+  .wl-link {
+    flex: 1 1 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 14px;
+    letter-spacing: .14em;
+  }
+  .wl-link__light {
+    width: 9px;
+    height: 9px;
+    margin-left: 3px;
+    transform: rotate(45deg);
+    background: var(--wl-rust);
+    box-shadow: 0 0 6px var(--wl-rust);
+  }
+  .wl-link__light.is-on {
+    background: var(--wl-verdigris);
+    box-shadow: 0 0 6px var(--wl-verdigris);
+  }
+  .wl-link__label {
+    color: var(--wl-bone);
+  }
+  .wl-link__how {
+    letter-spacing: normal;
+  }
+  .wl-link__cmd {
+    font-family: var(--wl-font-data);
+    letter-spacing: normal;
+    color: var(--wl-bone);
+    background: var(--wl-ink);
+    border: var(--wl-border);
+    padding: 4px 8px;
+    user-select: all;
+  }
+  .wl-console__buttons .btn--quiet.wl-link__copy {
+    font-size: 13px;
+    padding: 4px 10px;
+  }
+  .wl-console__buttons .btn--quiet{font-size:14px;letter-spacing:.14em;padding:9px 14px}
+  /* A button that can do nothing looks like it: even the red one, or STOP shouts at
+     you while there is nothing to stop. */
+  .wl-console__buttons .btn:disabled{color:var(--wl-ash);border-color:#2a251e;
+    cursor:default}
+  .wl-console__state{font-size:15px;margin-left:6px}
+
+  /* A setting that is off until you ask for it: the switch, then what it opens. */
+  .wl-optional{display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none;
+    font-family:var(--wl-font-data);font-size:13px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--wl-ash);margin-bottom:8px}
+  .wl-optional:hover{color:var(--wl-bone)}
+  .wl-optional input{accent-color:var(--wl-brass);cursor:pointer;margin:0}
+
+  /* A setting that is off until you ask for it: the switch, then what it opens. */
+  .wl-optional{display:flex;align-items:center;gap:7px;cursor:pointer;user-select:none;
+    font-family:var(--wl-font-data);font-size:13px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--wl-ash);margin-bottom:8px}
+  .wl-optional:hover{color:var(--wl-bone)}
+  .wl-optional input{accent-color:var(--wl-brass);cursor:pointer;margin:0}
+
+  /* ---- where to search ---- */
+  /* A place is a chip, like every other choice on the page, with its reach on it. */
+  .wl-place{display:inline-flex;align-items:center;gap:2px;flex:none}
+  .wl-place__forget{background:transparent;border:1px solid transparent;
+    color:var(--wl-ash);cursor:pointer;font-size:13px;line-height:1;padding:4px 5px}
+  .wl-place__forget:hover{color:var(--wl-rust);border-color:#2a251e}
+  .wl-place__said{font-size:15px;color:var(--wl-ash);margin:2px 0 16px;
+    display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+  .btn.wl-place__list{font-size:13px;padding:2px 7px}
+  /* The spot the list is measured from, on the map: our own mark, lit like a pin. */
+  .wl-home-pin{filter:drop-shadow(0 0 6px rgba(201,150,47,.55))}
+  /* Your clock, under the language and shaped like it. */
+  .wl-clock__label {
+    margin-top: 16px;
+  }
+  .field.wl-clock__box {
+    width: 100%;
+    font-family: var(--wl-font-body);
+    font-size: 16px;
+    color: var(--wl-bone);
+    background: var(--wl-soot);
+    border: var(--wl-border, 1px solid var(--wl-ash));
+    padding: 10px 12px;
+  }
+  /* Your clock and your starting point, side by side under the language. */
+  .wl-you {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .wl-you__half {
+    flex: 1 1 230px;
+    min-width: 0;
+  }
+  @media (min-width: 900px) {
+    .wl-lang-cell {
+      grid-column: span 2;
+    }
+  }
+  .field.wl-clock__box:disabled {
+    color: var(--wl-ash);
+  }
+  .field.wl-clock__box:focus {
+    border-color: var(--wl-brass-lit);
+    outline: none;
+  }
+
+  /* The main input on this panel, and it should look like it. */
+  .wl-find{display:flex;gap:10px;align-items:center;margin-bottom:8px}
+  .field.wl-find__box{flex:1;min-width:260px;font-size:18px;padding:13px 15px;
+    border:1px solid var(--wl-brass);background:#0e0c09;color:var(--wl-bone)}
+  .field.wl-find__box:focus{border-color:var(--wl-brass-lit);outline:none;
+    box-shadow:0 0 0 1px var(--wl-brass-lit)}
+  .field.wl-find__box::placeholder{color:var(--wl-ash);font-style:italic}
+  .wl-find__said{font-size:15px;white-space:nowrap}
+  /* Beside the box, the same height as it: keep what you typed, under your words. */
+  .btn.wl-find__add{font-size:14px;letter-spacing:.16em;padding:13px 18px;flex:none}
+  /* What was found: the whole row is the button. */
+  .wl-find__list{position:static;max-height:260px;margin-bottom:4px}
+  .wl-find__hit{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .wl-find__name{font-size:17px;color:var(--wl-bone);flex:none}
+  .wl-find__full{font-size:14px;flex:1;min-width:120px}
+  .wl-find__also{flex:none}
+
+  /* What the trades add up to, under the picker. */
+  .wl-picked{font-size:16px;margin-top:14px}
+
+  /* A box's own padding is the space above its title; the browser's default margin on
+     top of it left a gap twice the size. */
+  .heading:first-child{margin-top:0}
+
+  /* ---- a brass frame with the masthead's stepped corners ----
+     The same build as the masthead: a brass layer, an ink layer inset by a hair, both
+     cut to one notched outline, and a fainter engraved line inside. */
+  .wl-frame{position:relative;background:var(--wl-brass-lit);padding:1px;
+    clip-path:polygon(16px 0,calc(100% - 16px) 0,100% 16px,100% calc(100% - 16px),
+              calc(100% - 16px) 100%,16px 100%,0 calc(100% - 16px),0 16px)}
+  .wl-frame__inner{position:relative;padding:24px 26px 20px;
+    background:linear-gradient(180deg,#17130d 0%,#0c0b08 100%);
+    clip-path:polygon(16px 0,calc(100% - 16px) 0,100% 16px,100% calc(100% - 16px),
+              calc(100% - 16px) 100%,16px 100%,0 calc(100% - 16px),0 16px)}
+  .wl-frame__inner::before{content:"";position:absolute;inset:7px;pointer-events:none;
+    border:1px solid rgba(201,150,47,.30);
+    clip-path:polygon(11px 0,calc(100% - 11px) 0,100% 11px,100% calc(100% - 11px),
+              calc(100% - 11px) 100%,11px 100%,0 calc(100% - 11px),0 11px)}
+  @media (max-width:520px){
+    .wl-frame__inner{padding:20px 16px 16px}
+  }
+
+  /* ---- the filters, as one box ---- */
+  .wl-filter{margin-bottom:22px}
+  .wl-filter__label{margin-top:14px}
+  /* What the list is, under the heading: its cities, trades and starting point. */
+  .wl-filter__about {
+    font-size: 16px;
+    margin: 0 0 14px;
+  }
+  /* A row of chips that scrolls sideways rather than pushing the page down. There
+     will be dozens of past searches and only one line to put them on. */
+  .wl-strip{display:flex;gap:6px;align-items:center;overflow-x:auto;padding:2px 0 6px;
+    scrollbar-width:thin;scrollbar-color:var(--wl-soot) transparent}
+  .wl-strip::-webkit-scrollbar{height:6px}
+  .wl-strip::-webkit-scrollbar-thumb{background:var(--wl-soot)}
+  .wl-strip--options{padding-top:4px}
+  .wl-strip__lead{font-size:14px;white-space:nowrap;margin-right:2px}
+  /* One shape for every chip in here, chosen or not — the difference is brass. */
+  .wl-chip{background:transparent;color:var(--wl-ash);border:1px solid #2a251e;
+    font-family:var(--wl-font-body);font-size:13px;letter-spacing:.06em;
+    text-transform:uppercase;padding:4px 9px;border-radius:0;cursor:pointer;
+    white-space:nowrap;flex:none;line-height:1.35}
+  .wl-chip:hover{color:var(--wl-bone);border-color:#3a332a}
+  .wl-chip.is-on{color:var(--wl-brass-lit);border-color:var(--wl-brass)}
+  .wl-chip__count{font-family:var(--wl-font-data);font-size:12px;margin-left:6px;
+    opacity:.75}
+  /* What the search under the pointer actually is. */
+  .wl-strip__said{font-size:14px;color:var(--wl-ash);padding:2px 0 4px;
+    display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+  .btn.wl-strip__words{font-size:13px;padding:2px 7px}
+  /* The one button here that throws something away wears the rust, and only on
+     hover — a list of searches should not glow red while you are reading it. */
+  .btn.wl-strip__forget:hover{color:var(--wl-rust)}
+
+  /* ---- asking before throwing something away ---- */
+  .wl-ask{position:fixed;inset:0;z-index:60;display:flex;align-items:center;
+    justify-content:center;padding:24px;background:rgba(0,0,0,.66)}
+  /* Narrow on purpose: the whole point is that the sentence gets read. */
+  .wl-ask__box{max-width:440px;border:1px solid var(--wl-line)}
+  .wl-ask__which{font-family:var(--wl-font-data);font-size:13px;color:var(--wl-ash)}
+  /* The only red on the page, and only when there is really something to lose. */
+  .wl-ask__cost{color:var(--wl-rust);border-left:3px solid var(--wl-rust);
+    padding-left:10px;margin-top:10px}
+  .wl-ask__buttons{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+  @media (max-width:520px){
+    .wl-ask__buttons{flex-direction:column-reverse}
+    .wl-ask__buttons .btn{width:100%}
+  }
+
+  /* ---- the scoreboard ---- */
+  .wl-score{padding:12px 14px;margin-bottom:16px}
+  .wl-score__band+.wl-score__band{margin-top:10px;padding-top:10px;
+    border-top:1px solid var(--wl-line)}
+  .wl-score__when{margin-bottom:6px}
+  /* Wraps rather than scrolls: six numbers do not fit a phone in one line and a
+     scoreboard you have to drag is a scoreboard you stop reading. */
+  .wl-score__row{display:flex;flex-wrap:wrap;gap:8px}
+  .wl-score__cell{flex:1 1 86px;border:1px solid var(--wl-line);padding:7px 10px}
+  .wl-score__n{display:block;font-family:var(--wl-font-data);font-size:22px;
+    line-height:1.1;color:var(--wl-parchment)}
+  .wl-score__name{display:block;font-size:13px;color:var(--wl-ash);
+    white-space:nowrap}
+  /* One accent only, on the one that pays. Everything else stays plain. */
+  .wl-score__cell[data-state="sold"] .wl-score__n{color:var(--wl-verdigris)}
+
+  /* ---- what is coming up ---- */
+  .wl-coming{padding:12px 14px;margin-bottom:16px}
+  .wl-coming__line{display:flex;gap:12px;align-items:baseline;padding:5px 0;
+    border-bottom:1px solid var(--wl-line);font-size:16px}
+  .wl-coming__line:last-child{border-bottom:0}
+  .wl-coming__when{font-family:var(--wl-font-data);font-size:14px;color:var(--wl-ash);
+    white-space:nowrap}
+  .wl-coming__line.is-late .wl-coming__when{color:var(--wl-brass-lit)}
+  .wl-coming__late{margin-left:7px}
+  /* Whose call it is, as quiet as the note beside it. */
+  .wl-coming__whose{margin-left:8px}
+  .wl-coming__who{flex:1}
+  .wl-coming__note{margin-left:10px;font-size:14px}
+  .wl-coming__jump{font-size:14px;padding:3px 8px}
+
+  /* A day to a line, with the name of the day in its own narrow column. */
+  .wl-week{font-size:13px;line-height:1.45;margin-top:4px}
+  .wl-week .wl-day{display:inline-block;width:34px;color:var(--wl-ash);opacity:.8}
+  /* The map gets the masthead's frame: a brass edge, an ink layer inset by a hair,
+     both cut to the same stepped outline. */
+  .wl-mapbox{position:relative;background:var(--wl-brass-lit);padding:1px;
+    clip-path:polygon(18px 0,calc(100% - 18px) 0,100% 18px,100% calc(100% - 18px),
+              calc(100% - 18px) 100%,18px 100%,0 calc(100% - 18px),0 18px)}
+  .wl-mapbox__in{position:relative;overflow:hidden;background:var(--wl-ink);
+    clip-path:polygon(18px 0,calc(100% - 18px) 0,100% 18px,100% calc(100% - 18px),
+              calc(100% - 18px) 100%,18px 100%,0 calc(100% - 18px),0 18px)}
+
+  /* The map's own background is the page's ink, because no landmass is drawn. */
+  .leaflet-container{background:var(--wl-ink);font-family:var(--wl-font-body)}
+  /* Streets and their names, pulled towards brass. This layer draws on a transparent
+     background, so what shows between the roads is the ink above.
+     Which layer sits on top is set in `map.js`, with Leaflet's own `zIndex` — it used
+     to be a `z-index` here, this block was duplicated further down, and the copy
+     without it won. That is why the map went black: the water layer was painting over
+     the streets. */
+  /* The contrast at the end is what makes the roads read as lines rather than as
+     bands: it eats the soft edge the tiles are drawn with, which takes roughly a
+     pixel off either side of every street. */
+  .wl-tiles{filter:grayscale(1) sepia(.8) hue-rotate(350deg) saturate(1.8) brightness(.72)
+            contrast(1.5)}
+  /* The water, underneath, and the reason this filter looks mad: on these tiles the
+     land is mid-grey and the river is DARKER than it, so simply dimming them makes
+     both black — which is why the Danube had disappeared. Inverting turns that round
+     (the river becomes the brightest thing), the brightness drops the pair either
+     side of the middle, and the hard contrast then throws the land to black and the
+     river to white. The rest is colour: a cold steel blue, dimmed, so it reads as
+     water beside the brass streets. */
+  .wl-water{filter:invert(1) grayscale(1) brightness(.62) contrast(20) sepia(.55)
+            hue-rotate(155deg) saturate(2.4) brightness(.55)}
+  /* Our pins are SVG, so Leaflet's own marker box must not fight them. */
+  .wl-pin{background:none;border:0}
+  .wl-pin svg{display:block;filter:drop-shadow(0 2px 3px rgba(0,0,0,.7))}
+  .wl-pin--group{cursor:zoom-in}
+  /* The bubble, in our colours rather than Leaflet's white. */
+  .leaflet-popup-content{margin:10px 13px;font-size:16px;line-height:1.55}
+  .leaflet-popup-content a{color:var(--wl-brass-lit)}
+  .leaflet-popup-content-wrapper{background:var(--wl-ink);color:var(--wl-bone);
+       border:1px solid var(--wl-brass);border-radius:0;box-shadow:none}
+  .leaflet-popup-tip{background:var(--wl-ink)}
+  /* Leaflet's own rule is `.leaflet-container a.leaflet-popup-close-button`, so this
+     matches it selector for selector and wins on coming later. No `!important`. */
+  .leaflet-container a.leaflet-popup-close-button{color:var(--wl-ash)}
+  /* Leaflet's own chrome, in our colours rather than its default white. */
+  .leaflet-control-zoom a{background:var(--wl-ink);color:var(--wl-bone);border-color:var(--wl-soot)}
+  .leaflet-control-zoom a:hover{background:var(--wl-soot);color:var(--wl-brass)}
+  /* The data's credit, as quiet as a credit can be and still be read. */
+  .leaflet-container .leaflet-control-attribution{background:transparent;color:var(--wl-line);
+    font-size:11px;opacity:.7;padding:0 6px;margin-right:18px}
+  .leaflet-control-attribution a{color:var(--wl-line)}
+  /* The row the map has just pointed at: two seconds of brass, fading out. */
+  @keyframes wl-found{
+    0%{background:rgba(201,150,47,.26);box-shadow:inset 0 0 0 1px var(--wl-brass-lit)}
+    70%{background:rgba(201,150,47,.12);box-shadow:inset 0 0 0 1px var(--wl-brass)}
+    100%{background:transparent;box-shadow:inset 0 0 0 1px transparent}
+  }
+  tr.wl-found td{animation:wl-found 2s ease-out both}
+  @media (prefers-reduced-motion:reduce){
+    tr.wl-found td{animation:none;background:rgba(201,150,47,.18)}
+  }
+
+  /* ---- a phone ----
+     Eleven columns cannot share four hundred pixels. Below this width the table
+     stops being a table: every row becomes a card, every cell a line inside it with
+     its heading printed beside the value. Nothing is hidden and nothing scrolls
+     sideways — the alternative was a column thirty pixels wide printing a word one
+     letter to a line. */
+  @media (max-width:900px){
+    table.wl-table,
+    table.wl-table tbody,
+    table.wl-table tr,
+    table.wl-table td{display:block;width:auto}
+    /* The headings are printed on every cell below, so the row of them is noise. */
+    table.wl-table thead{display:none}
+    table.wl-table{table-layout:auto}
+    /* Every percentage above is off: a card is as wide as the screen. */
+    table.wl-table td[class]{width:auto}
+
+    /* One card per business, with its own edge. The striping and the hairlines that
+       separated rows on a wide screen would fight this, so they go. */
+    table.table tbody tr.wl-row{border:1px solid var(--wl-line);margin-bottom:14px;
+      background:rgba(255,255,255,.012)}
+    table.table tbody tr.wl-row:nth-child(even) td{background:transparent;border-bottom:0}
+    table.table tbody tr.wl-row td{border-bottom:0;padding:7px 12px}
+    table.table tbody tr.wl-row:hover td{background:transparent}
+    /* The state's colour moves to the whole left edge of the card. */
+    table.table tbody tr.wl-row:hover td:first-child,
+    table.table tbody tr.wl-row td:first-child{box-shadow:none}
+    tr.wl-need_call{border-left:3px solid var(--wl-brass-lit)}
+    tr.wl-not_reached{border-left:3px solid var(--wl-ash)}
+    tr.wl-follow_up{border-left:3px solid var(--wl-brass)}
+    tr.wl-they_call{border-left:3px solid color-mix(in srgb,var(--wl-brass) 55%,transparent)}
+    tr.wl-sold{border-left:3px solid var(--wl-verdigris)}
+
+    /* The heading, printed beside its value. Inline, so a one-word value sits on the
+       same line and a value made of several lines starts under it by itself. */
+    td.wl-cell::before{content:attr(data-label);display:inline-block;min-width:88px;
+      color:var(--wl-ash);font-family:var(--wl-font-data);font-size:12px;
+      letter-spacing:.11em;text-transform:uppercase;vertical-align:top}
+    /* Figures read from the left here: there is no column for them to line up in. */
+    table.wl-table td.wl-cell--figure{text-align:left}
+    /* On a wide screen this is a row of its own inside a narrow column. Here it has
+       to sit beside its heading, or "WHY" gets a line to itself. */
+    .wl-why{display:inline-flex}
+
+    /* The masthead is set at sixty-one points and ran off the side of the screen,
+       which made the whole page scroll sideways. It shrinks to fit instead. */
+    .masthead__inner{padding:26px 16px 22px}
+    .masthead h1{font-size:min(61px,13vw);letter-spacing:.02em}
+    .masthead .sub{font-size:19px}
+    .masthead__mark{width:72px}
+
+    /* The name is the card's heading: bigger, no label, its own rule underneath. */
+    td.wl-cell--name{padding:11px 12px 9px;border-bottom:1px solid var(--wl-line)}
+    td.wl-cell--name::before{content:none}
+    .wl-name{font-size:19px}
+
+    /* These three are too tall to sit beside a heading, so the heading goes above. */
+    td.wl-statecell::before,
+    td.wl-notecell::before{display:block;min-width:0;margin-bottom:5px}
+    /* The six states and the notes box take the full width of the card. The name of
+       a state never breaks in half: the time beside it drops to the next line
+       instead, which is the whole point of this screen. */
+    .wl-state__row{padding:9px 10px;font-size:15px;flex-wrap:wrap}
+    .wl-state__name{white-space:nowrap}
+    textarea.wl-note{position:static;width:100%;min-height:120px;resize:vertical}
+    /* The buttons are their own row at the foot of the card, no heading needed. */
+    td.wl-doings{padding:9px 12px 11px;border-top:1px solid var(--wl-line)}
+    td.wl-doings::before{content:none}
+    td.wl-doings .btn{font-size:15px;padding:7px 11px}
+    .btn.wl-icon{font-size:17px;padding:7px 11px;min-width:38px}
+    /* The trade list, as cards: eight fields side by side cannot share a phone. */
+    table.wl-trades__table thead{display:none}
+    table.wl-trades__table,
+    table.wl-trades__table tbody,
+    table.wl-trades__table tr,
+    table.wl-trades__table td{display:block;width:auto}
+    .wl-trades__row{border:1px solid var(--wl-line);margin:0 0 10px;padding:4px 0}
+    .wl-trades__row:nth-child(even) td{background:transparent}
+    .wl-trades__table td[data-label]::before{content:attr(data-label);
+      display:inline-block;min-width:96px;color:var(--wl-ash);
+      font-family:var(--wl-font-data);font-size:12px;letter-spacing:.1em;
+      text-transform:uppercase;vertical-align:middle}
+    .wl-trades__table .field{font-size:15px}
+    /* The three long fields get a line of their own under their heading. Beside it
+       they were 60% of a phone and the words ran out of sight inside the box, which
+       reads as a value that has been cut off. */
+    .wl-trades__name,.wl-trades__words,.wl-trades__note{display:block;width:100%;
+      min-width:0;margin-top:3px}
+    .wl-trades__scroll{max-height:none;border:0}
+    .wl-trades__find{max-width:none}
+
+    /* The coming-up panel: four things side by side fit a wide screen and overflow a
+       phone — the telephone number ran off the right edge and "go to it" came apart
+       into three lines. Stacked, with the time above the name. */
+    .wl-coming__line{display:block;padding:9px 0}
+    .wl-coming__when{display:block;margin-bottom:3px}
+    .wl-coming__who{display:block}
+    .wl-coming__note{display:block;margin-left:0;margin-top:2px}
+    .wl-coming__jump{display:inline-block;margin-top:6px;font-size:15px;padding:5px 10px}
+
+    /* A finger, not a mouse: the ring-back controls get something to aim at. */
+    .wl-when__shown{font-size:15px;padding:5px 3px}
+    .wl-when__field{font-size:15px;padding:6px 7px}
+    .wl-when__done{font-size:13px;padding:6px 10px}
+    .wl-when__clear{font-size:17px;padding:5px 7px}
+    .wl-step__arrow{font-size:16px;padding:6px 11px}
+  }
+
+  /* The link in the bubble reads as a link rather than as another line of text. */
+  .leaflet-popup-content .wl-jump{display:inline-block;margin-top:6px;color:var(--wl-brass-lit);
+    border-bottom:1px solid var(--wl-brass);text-decoration:none}
+</style>
+</head>
+<body>
+<!-- The prism paints here, over the artwork at the top. It removes itself when unsupported. -->
+<canvas id="prism-canvas"></canvas>
+</body>
+</html>

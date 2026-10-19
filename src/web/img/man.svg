@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 300" role="img"
+     aria-label="A man in a coat, mid-stride, about to step through the door">
+  <title>The departing client</title>
+  <defs>
+    <linearGradient id="man-body" x1="1" y1="0" x2="0" y2="0">
+      <stop offset="0" stop-color="#050404"/>
+      <stop offset="1" stop-color="#0e0c0a"/>
+    </linearGradient>
+    <linearGradient id="man-rim" x1="1" y1="0" x2="0" y2="0">
+      <stop offset=".50" stop-color="#8a6820" stop-opacity=".25"/>
+      <stop offset=".80" stop-color="#8a6820" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#c9962f" stop-opacity="1"/>
+    </linearGradient>
+
+    <!-- jointed parts: simple shapes, correct anatomy, drawn twice -->
+    <g id="man-parts">
+      <ellipse cx="60" cy="30" rx="17" ry="20"/>
+      <path d="M51 44 h18 v16 h-18 z"/>
+      <path d="M33 62 Q37 52 50 49 L70 49 Q83 52 87 62
+               Q91 92 92 122 Q92 152 88 174 L32 174 Q28 152 29 122 Q30 92 33 62 Z"/>
+      <path d="M83 62 Q92 72 93 98 L94 140 Q94 155 88 158 Q82 160 81 151
+               L80 136 L78 98 Q77 76 74 64 Z"/>
+      <path d="M62 166 L86 166 L87 222 L64 226 Z"/>
+      <path d="M64 218 L87 216 L86 266 L65 266 Z"/>
+      <path d="M62 260 L87 260 Q92 270 87 277 L60 277 Q56 268 62 260 Z"/>
+      <path d="M37 166 L60 166 L57 212 L35 219 Z"/>
+      <path d="M35 212 L57 206 L33 256 L13 248 Z"/>
+      <path d="M13 246 L33 253 Q33 266 24 271 L7 267 Q3 256 13 246 Z"/>
+    </g>
+  </defs>
+
+  <!-- the rim first, fattened; the fill then covers all the inner edges -->
+  <use href="#man-parts" fill="none" stroke="url(#man-rim)" stroke-width="2"
+       vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+  <use href="#man-parts" fill="url(#man-body)"/>
+</svg>

@@ -1,0 +1,27 @@
+@layer tokens {
+:root {
+  --wl-ink: #0b0a08;
+  --wl-soot: #141210;
+  --wl-bone: #e8e2d4;
+  /* The quiet text colour. It was #6b6459 — dark enough on near-black that a
+     secondary line could not be read at all. Lifted until it can be. */
+  --wl-ash: #a29888;
+  /* A rule or a track: one step quieter than ash. */
+  --wl-line: #6b6459;
+  --wl-brass: #8a6820;
+  --wl-brass-lit: #c9962f;
+  --wl-verdigris: #7a9a6b;
+  --wl-rust: #a8453a;
+  --wl-font-body: 'Spectral',Georgia,serif;
+  --wl-font-head: 'Cormorant Garamond',serif;
+  --wl-radius: 0;
+  --wl-border: 1px solid #2a251e;
+  --wl-tracking: .08em;
+}
+:root{--wl-font-display:"Cinzel","Cormorant Garamond","Cormorant fallback",Georgia,serif}
+:root{
+  --wl-font-body:'Spectral',"Spectral fallback",Georgia,serif;
+  --wl-font-head:'Cormorant Garamond',"Cormorant fallback",Georgia,serif;
+  --wl-font-data:'JetBrains Mono',"Mono fallback",ui-monospace,Menlo,monospace;
+}
+}

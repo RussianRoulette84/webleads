@@ -1,0 +1,83 @@
+# ─────────────────────────────────────────────────────────────────────────────
+#  SECRETS — never, ever in the repository
+# ─────────────────────────────────────────────────────────────────────────────
+.env
+.env.*
+*.pem
+*.key
+*.p12
+id_rsa
+id_ed25519
+ssh/
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  PRIVATE — the author's own AI-agent setup, kept on his disk only
+# ─────────────────────────────────────────────────────────────────────────────
+/.claude/
+/CLAUDE.md
+/skills-lock.json
+/design/
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  RUST — anything the compiler makes
+# ─────────────────────────────────────────────────────────────────────────────
+# Gigabytes of build output. Cargo.lock is deliberately NOT here: this is an
+# application, so everyone should build against the exact same versions.
+target/
+**/*.rs.bk
+# The WebAssembly page that trunk builds out of crates/ui.
+/src/webleads/crates/ui/dist
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  OUR OWN DATA — real businesses and real phone numbers, never shared
+# ─────────────────────────────────────────────────────────────────────────────
+# The database, its backups, the scraper's spreadsheets and job database, and the
+# screenshots. The rule skips the folder's *contents* rather than the folder, because
+# git will not look inside a folder it has been told to skip — and one file in there
+# does belong in the repository.
+/data/*
+# The hundred trades. Hand-written, not generated, and the server reads it at startup.
+!/data/TARGETS.csv
+# Any spreadsheet a search leaves lying around outside data/.
+/*.csv
+# Logs, except the note explaining what they are.
+/logs/*
+!/logs/README.md
+*.log
+*.log.*
+# SQLite's companion files, left behind by any open database.
+*.db
+*.db-shm
+*.db-wal
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  BINARIES — downloaded, never hand-written
+# ─────────────────────────────────────────────────────────────────────────────
+# The scraper binary, if you run it by hand rather than from its Docker image.
+/bin
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  OPERATING SYSTEMS AND EDITORS
+# ─────────────────────────────────────────────────────────────────────────────
+.DS_Store
+._*
+# Where the `trash` command puts things on Linux.
+.Trash-*
+Thumbs.db
+Desktop.ini
+*~
+.vscode/
+.idea/
+.zed/
+*.swp
+__pycache__/
+*.py[cod]
+
+# ─────────────────────────────────────────────────────────────────────────────
+#  SCRATCH
+# ─────────────────────────────────────────────────────────────────────────────
+*.bak
+*.orig
+*.tmp
+*.old
+/tmp/

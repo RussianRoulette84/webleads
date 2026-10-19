@@ -1,0 +1,14 @@
+[package]
+name = "webleads-sitecheck"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+webleads-domain = { workspace = true }
+reqwest = { workspace = true }
+tokio = { workspace = true }
+futures-util = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }

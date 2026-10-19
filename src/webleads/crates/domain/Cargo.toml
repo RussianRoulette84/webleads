@@ -1,0 +1,17 @@
+[package]
+name = "webleads-domain"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+# This crate depends on almost nothing on purpose. It describes *what a lead is*,
+# and that description should not change because we swapped a web framework or a
+# database. Everything else in the workspace depends on this; this depends on
+# nothing of ours.
+[dependencies]
+serde = { workspace = true }
+thiserror = { workspace = true }
+time = { workspace = true }
+time-tz = { workspace = true }
+serde_json = { workspace = true }

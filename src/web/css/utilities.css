@@ -1,0 +1,6 @@
+@layer utilities {
+.u-wide{width:100%}
+/* For the columns that are always short — a telephone number, "1.1 km", a state.
+   They were wrapping onto two lines while the column beside them had room to spare. */
+.u-keep{white-space:nowrap}
+}

@@ -1,0 +1,27 @@
+[package]
+name = "webleads-server"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+webleads-domain = { workspace = true }
+webleads-scraper = { workspace = true }
+webleads-sitecheck = { workspace = true }
+webleads-store = { workspace = true }
+axum = { workspace = true }
+tokio = { workspace = true }
+futures-util = { workspace = true }
+tower-http = { workspace = true }
+reqwest = { workspace = true }
+serde = { workspace = true }
+csv = { workspace = true }
+rust_xlsxwriter = { workspace = true }
+serde_json = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+tracing-appender = { workspace = true }
+tzf-rs = { workspace = true }
